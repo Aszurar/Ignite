@@ -1,0 +1,58 @@
+section.repository-list {
+    max-width: 82rem;
+    margin: 40px auto;
+    h1{
+        margin-bottom: 16px;
+        text-align: center;
+    }
+    ul {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        li {
+            // & + li { // & -> se refere ao próprio elemento(li)
+            //     margin-top: 20px;
+            // }
+            display: block;
+            max-width: 25rem;
+            background: #1D1E22;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 1rem;
+
+            p {
+                font-size: 14px;
+                color: white;
+                margin: 1rem;
+            }
+            a {
+                display: inline-block; // permite o elemento a receber propriedades de margin/padding...
+                text-decoration: none;
+                color: white;
+                background-color: #8257e3;
+                padding: 1rem;
+                border-radius: 0.8rem;
+                border: 2px solid white;
+                transition: all 0.5s;
+            }
+            
+            a:hover {
+                color: #8257e3;
+                background-color: white;
+                padding: 1rem;
+                border: 2px solid #8257e3;
+
+            }
+            transition: all .3s;
+            opacity: .5;
+
+        }
+
+        li:hover {
+            transform: scale(1.05);
+            opacity: 1;
+            box-shadow: 0.1rem 0 0.8rem 0.3rem #8257e3;
+        }
+    }
+}
