@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { RepositoryItem }  from './RepositoryItem'
 import '../styles/repositories.scss'
-const repositoryName = "Sorvetinho"
 //a maneira de trazer variáveis do javascript para o 
-//html dentro de um Componente react é colocar as variáveis entre {
+//html dentro de um Componente react é colocar as variáveis entre {}
 interface Repository {
     // definindo a tipagem para cada repositório
     name: string,
