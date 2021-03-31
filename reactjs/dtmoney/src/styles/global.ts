@@ -9,9 +9,10 @@ export const GlobalStyle = createGlobalStyle`
 
         --blue-light: #6933FF;
 
-        --text-tile: #363F5F;
-        --text-body: #969CB2;
+        --text-title: #363F5F;
+        --text-body: #969CB3;
         
+        --input-background: #E7E9EE;
         --background: #F0F2F5;
         --shape: #FFFFFF;
     }
@@ -57,5 +58,49 @@ export const GlobalStyle = createGlobalStyle`
         opacity: 0.6;
         cursor: not-allowed;
     }
+
+/* Estilização do Modal de forma global, pois geralmente todos os modais
+de uma página seguem a mesma estilização */
+    .react-modal-overlay {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed; // elemento sempre fixo na tela, o scroll não será habilitado
+        // e habilita as propriedades top, left, right e bottom.
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        // estratégia de alinhar o conteúdo, o único elemento do overlay ao centro da tela
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .react-modal-content {
+        // ocupe no máximo 676px mas se não der, então ocupe 100% da tela
+        width: 100%;
+        max-width: 576px;
+        background-color: var(--background);
+        padding: 3rem;
+        position: relative;
+        border-radius: 0.24rem;
+        
+    }
+
+    .react-modal-close {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        font-size: 0;
+        border: none;
+        background-color: transparent;
+        transition: filter 0.2s;
+
+        &:hover {
+            filter: brightness(0.8);
+        }
+    }
+
+
 
 `
