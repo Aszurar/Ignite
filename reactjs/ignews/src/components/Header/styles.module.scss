@@ -6,7 +6,7 @@
 .headerContent {
     height: 100%;
     max-width: 1120px;
-    margin: 2rem auto;
+    margin: 0 auto;
     padding: 0 2rem; 
 
     display: flex;
@@ -48,11 +48,18 @@
                 border-radius: 3px 3px 0 0;
                 background-color: var(--yellow-500);
                 position: absolute;
-                // posicionando em baixo
+                // posicionando em baixo essa barrinha branca
                 bottom: 1px;
                 left: 0;
             }
         }
+    }
+
+    button {
+        margin-left: auto
+        // sempre tentará colocar  a maior margin possível
+        // só lembrando esta pondo a margin à esquerda do botão de SignIn no contexto do header para que se evite de
+        // colocar essa margin nos css do botão, pois caso ele for usado em outro componente, teria essa margin atrapalhando;
     }
 
 }
