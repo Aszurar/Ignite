@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{ 
+    --white: #FFFFFF;
+
+    --gray-100: #e1e1e1;
+    --gray-300: #a8a8b3;
+    --gray-800: #29292e;
+    --gray-900: #121214;
+
+    --cyan-500: #61dafb;
+    --yellow-500: #eba417;
+}
+
+
+// acessibilidade -> as fontes serão reduzidas de acordo com o tamanho da tela
+@media(max-width: 1080px) {
+    html{
+        font-size: 93.75%;
+    }
+}
+
+@media(max-width: 720px) {
+    html{
+        font-size: 87,5%;
+    }
+}
+
+body {
+    background-color: var(--gray-900);
+    color: var(--white);
+}
+
+body, input, button, select, textarea {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    //fazendo com que a cor padrão do a seja a mesma do seu elemento pai!
+    text-decoration: none;
+}
