@@ -25,6 +25,13 @@
 
     transition: filter .2s;
 
+    img {
+        margin-right: 0.5rem;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+    }
+
     svg.closeIcon {
         margin-left: 1rem;
     }
