@@ -20,6 +20,7 @@ export default NextAuth({
       // console.log(user); test! -> 
       // User é o objeto que possui os dados no meu perfil do github, os demais 
       // parâmetros guaram outros dados do meu perfil no github
+      const { email } = user;
       try {
         await fauna.query(
           q.If(
