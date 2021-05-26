@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'react-native';
 import { Button } from '../components/Button/Button';
 import { SkillCard } from '../components/SkillCard/SkillCard';
@@ -6,6 +6,7 @@ import { SkillCard } from '../components/SkillCard/SkillCard';
 export function Home() {
     const [newSkill, setNewSkill] = useState('');
     const [mySkills, setMySkills] = useState([]);
+    const [greetings, setGreetings] = useState('');
 
     function handleNewSkill(data) {
         setNewSkill(data)
@@ -19,10 +20,23 @@ export function Home() {
         // As 2 formas realização a mesma atualização.
     }
 
-  return(
+    useEffect(() => {
+        let currentHour = new Date().getHours(); // resgatando a hora atualização
+
+        if (currentHour < 12) {
+            setGreetings('Good Morning 🛣')
+        } else if (currentHour >= 12 && currentHour < 18) {
+            setGreetings('Good Afternoon ☀')
+        } else {
+            setGreetings('Good Night 🌙')
+        }
+    }, [])
+
+return(
     <View style={styles.container}>
       <Text style={styles.title}>Welcome, Lucas de Lima</Text>
-      
+        <Text style={styles.greetingsText}>{ greetings }</Text>
+
       <TextInput style={styles.textInput} 
                 placeholder="New Skill" 
                 placeholderTextColor="#555"
@@ -63,4 +77,8 @@ const styles = StyleSheet.create({
         marginTop: 30,
         color: '#fff',
     },
+    greetingsText : {
+        color: '#fff',
+
+    }
 })
