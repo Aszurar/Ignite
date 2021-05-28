@@ -1,15 +1,25 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet,FlatList } from 'react-native';
 
-export function SkillCard({ mySkillsValues }) {
+interface MySkillsPropsValues {
+    id: string,
+    name: string;
+}
+
+interface MySkillsProps {
+        mySkillsValues: MySkillsPropsValues[];
+        // outra forma de tipar: Array<MySkillsPropsValues>;
+}
+
+export function SkillCard({ mySkillsValues }: MySkillsProps){
     return( 
         <FlatList
             data={mySkillsValues}
-            keyExtractor={item => item}
+            keyExtractor={item => item.id}
             renderItem={({ item }) => (           
                 <TouchableOpacity style={styles.skillCard}>
                     <Text style={styles.skillTitle}>
-                        {item}
+                        {item.name}
                     </Text>
                 </TouchableOpacity>
             )}

@@ -3,19 +3,28 @@ import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'r
 import { Button } from '../components/Button/Button';
 import { SkillCard } from '../components/SkillCard/SkillCard';
 
+interface MySkillsProps {
+    id: string;
+    name: string;
+    date?: string;
+}
+
 export function Home() {
     const [newSkill, setNewSkill] = useState('');
-    const [mySkills, setMySkills] = useState([]);
-    const [greetings, setGreetings] = useState('');
+    const [mySkills, setMySkills] = useState<MySkillsProps[]>([]);
+    const [gretting, setGretting] = useState('');
 
     function handleNewSkill(data) {
         setNewSkill(data)
     }
 
     function handleAddNewSkill(){
-        setMySkills( oldState => [...oldState, newSkill] )
-        console.log('alo');
+        const data: MySkillsProps = {
+            id: String(new Date().getTime()),
+            name: newSkill,
+        }
 
+        setMySkills( oldState => [...oldState, data] )
         // setMySkills([...mySkills, newSkill])
         // As 2 formas realização a mesma atualização.
     }
@@ -24,18 +33,18 @@ export function Home() {
         let currentHour = new Date().getHours(); // resgatando a hora atualização
 
         if (currentHour < 12) {
-            setGreetings('Good Morning 🛣')
+            setGretting('Good Morning 🛣')
         } else if (currentHour >= 12 && currentHour < 18) {
-            setGreetings('Good Afternoon ☀')
+            setGretting('Good Afternoon ☀')
         } else {
-            setGreetings('Good Night 🌙')
+            setGretting('Good Night 🌙')
         }
     }, [])
-
 return(
+    
     <View style={styles.container}>
       <Text style={styles.title}>Welcome, Lucas de Lima</Text>
-        <Text style={styles.greetingsText}>{ greetings }</Text>
+        <Text style={styles.grettingText}>{ gretting }</Text>
 
       <TextInput style={styles.textInput} 
                 placeholder="New Skill" 
@@ -77,7 +86,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         color: '#fff',
     },
-    greetingsText : {
+    grettingText : {
         color: '#fff',
 
     }
