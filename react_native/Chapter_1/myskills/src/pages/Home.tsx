@@ -14,7 +14,7 @@ export function Home() {
     const [mySkills, setMySkills] = useState<MySkillsProps[]>([]);
     const [gretting, setGretting] = useState('');
 
-    function handleNewSkill(data) {
+    function handleNewSkill(data: string) {
         setNewSkill(data)
     }
 
@@ -27,6 +27,11 @@ export function Home() {
         setMySkills( oldState => [...oldState, data] )
         // setMySkills([...mySkills, newSkill])
         // As 2 formas realização a mesma atualização.
+    }
+
+    function handleRemoveSkill(id: string) {
+        let mySkillsUpdate = mySkills.filter(skill => id !== skill.id);
+        setMySkills(mySkillsUpdate);
     }
 
     useEffect(() => {
@@ -51,13 +56,18 @@ return(
                 placeholderTextColor="#555"
                 onChangeText={ data => handleNewSkill(data)}
                 />
-      <Button onPressValue={handleAddNewSkill}/>
+      <Button onPress={handleAddNewSkill}
+              title="Add"
+      />
 
       <Text style={[styles.title, { marginVertical: 50 }]}>
             My Skills
       </Text>
 
-      <SkillCard mySkillsValues={mySkills} />
+      <SkillCard 
+        mySkillsValues={mySkills} 
+        RemoveSkill={(id) => handleRemoveSkill(id)}
+        />
     </View>
 
   )
