@@ -1,5 +1,7 @@
 import styled from "styled-components/native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { Feather, EvilIcons } from '@expo/vector-icons';
+
 export const Container = styled.View`
     flex: 1;
     background-color: ${(props) => props.theme.colors.background};
@@ -12,13 +14,17 @@ export const Header = styled.View`
     height: ${RFPercentage(42)}px;
 
     justify-content: center;
-    align-items: center;
+    align-items:flex-start;
     flex-direction: row;
 `;
 
 export const Head = styled.View`
    width: 100%;
    padding: 0 24px;
+   flex-direction: row;
+
+   justify-content: space-between;
+   align-items: center;
 `;
 
 export const UserInfo = styled.View`
@@ -51,4 +57,15 @@ export const UserName = styled.Text`
     font-size: ${RFValue(18)}px;
     font-family: ${({ theme }) => theme.fonts.bold};
     line-height: 24px;
+`;
+
+export const PowerIcon = styled(Feather)`
+
+    font-size: ${RFValue(24)}px;
+    color: ${({ theme }) => theme.colors.secundary};
+`; 
+
+export const CardsContainer = styled.View`
+    flex-direction: row;
+    overflow: scroll;
 `;
