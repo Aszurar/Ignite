@@ -2,16 +2,10 @@ import React from 'react';
 import { HighlightCard } from '../../components/HighlightCard'
 
 import {
-    // CardContainer,
-    CardsContainer,
-    CardHead,
-    CardHistoryText,
-    CardValueText,
-    CardTitle,
     Container,
-    DepositIcon,
     Head,
     Header,
+    HighlightCards,
     Photo,
     PowerIcon,
     User,
@@ -37,20 +31,12 @@ export function Dashboard() {
                     <PowerIcon name="power" />
                 </Head>
             </Header>
-            <CardsContainer>
-                <HighlightCard />
+            <HighlightCards>
+                <HighlightCard title="Entradas" icon="arrow-up" amount="R$ 17.000,00" lastTransaction="Última entrada dia 13 de abril" />
+                <HighlightCard title="Saídas" icon="arrow-down" amount="R$ 1.259,00" lastTransaction="" />
+                <HighlightCard title="Total" icon="" amount="R$ 16.141,00" lastTransaction="" />
 
-                {/* <CardContainer>
-                    <CardHead>
-                        <CardTitle>Entrada</CardTitle>
-                        <DepositIcon name="arrow-up"></DepositIcon>
-                    </CardHead>
-
-                    <CardValueText>R$ 17.400,00</CardValueText>
-                    <CardHistoryText>Última entrada dia 13 de abril</CardHistoryText>
-                </CardContainer> */}
-
-            </CardsContainer>
+            </HighlightCards>
         </Container>
     )
 }

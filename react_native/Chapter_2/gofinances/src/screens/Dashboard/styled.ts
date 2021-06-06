@@ -65,7 +65,9 @@ export const PowerIcon = styled(Feather)`
     color: ${({ theme }) => theme.colors.secundary};
 `; 
 
-export const CardsContainer = styled.View`
-    flex-direction: row;
-    overflow: scroll;
-`;
+export const HighlightCards = styled.ScrollView.attrs({
+    horizontal: true,
+    showsHorizontalScrollIndicator: false,
+    contentContainerStyle: { paddingHorizontal: 16}
+})``;
+
