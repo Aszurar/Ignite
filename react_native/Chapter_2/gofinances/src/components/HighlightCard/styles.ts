@@ -4,15 +4,13 @@ import { RFValue, RFPercentage } from 'react-native-responsive-fontsize';
 
 
 export const Container = styled.View`
-    background-color: ${({ theme }) => theme.colors.text};
+    background-color: ${({ theme }) => theme.colors.shape};
     border-radius: 5px;
     padding: ${RFValue(19)}px ${RFValue(23)}px ${RFValue(42)}px;
     /* margin: -${RFValue(220)}px ${RFValue(12)}px 0; */
     width: ${RFValue(265)}px;
     
     margin: 0 ${RFValue(8)}px;
-
-    height: 300px;
 `;
 
 export const Header = styled.View`
