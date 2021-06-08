@@ -2,7 +2,8 @@ import React from 'react';
 import { 
     Amount,
     Container, 
-    DepositIcon, 
+    EvilIcon,
+    FeatherIcon, 
     Footer, 
     Header, 
     LastTransaction, 
@@ -10,24 +11,47 @@ import {
 } from './styles';
 
 interface HighlightCardProps {
+    type: 'up' | 'down' | 'total'; 
     title: string;
-    icon: string;
     amount: string;
     lastTransaction: string;
 }
 
-export function HighlightCard({ title, icon, amount, lastTransaction }: HighlightCardProps){
+const icon = {
+    up: 'arrow-up',
+    down: 'arrow-down',
+    total: 'dollar-sign',
+}
+
+export function HighlightCard({ 
+    type, 
+    title, 
+    amount, 
+    lastTransaction 
+}: HighlightCardProps)
+
+{
     return(
-        <Container>
+        <Container type={type}>
             
             <Header>
-                <Title>{title}</Title>
-                <DepositIcon name={icon}/>
+                <Title type={type}>
+                {title}
+                </Title>
+                { type === 'total'  ? 
+                  <FeatherIcon name={icon[type]} /> : 
+                  <EvilIcon name={icon[type]} type={type}/>
+                }
             </Header>
             
             <Footer>
-                <Amount>{amount}</Amount>
-                <LastTransaction>{lastTransaction}</LastTransaction>
+                <Amount type={type}>
+                    {amount}
+                </Amount>
+                
+                <LastTransaction type={type}>
+                    {lastTransaction}
+                </LastTransaction>
             </Footer>
 
         </Container>
