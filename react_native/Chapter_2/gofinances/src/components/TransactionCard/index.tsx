@@ -36,10 +36,6 @@ export function TransactionCard({
     return (
     <Container>
             <Title>{title}</Title>
-            {/* { type === 'negative' ? 
-                <Amount type={type}>- {amount}</Amount> : 
-                <Amount type={type}>{amount}</Amount>}
-             */}
             <Amount type={type}> 
                 {type === 'negative' && '- '}
                 {amount}
