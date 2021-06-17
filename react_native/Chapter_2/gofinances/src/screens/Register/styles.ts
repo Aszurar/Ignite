@@ -28,4 +28,15 @@ export const Form = styled.View`
     flex: 1;
     width: 100%;
     padding: ${RFValue(24)}px;
+
+    justify-content: space-between;
+`;
+
+export const Fields = styled.View``;
+
+export const TypeTransactionContainer = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: ${RFValue(8)}px;
+    margin-bottom: ${RFValue(16)}px;
 `;

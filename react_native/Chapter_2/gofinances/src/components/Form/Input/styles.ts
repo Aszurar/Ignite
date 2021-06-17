@@ -14,7 +14,7 @@ export const Container = styled(TextInput)`
     padding: ${RFValue(18)}px ${RFValue(16)}px;
     border-radius: 5px;
 
-    margin-bottom: ${RFValue(5)}px;
+    margin-bottom: ${RFValue(8)}px;
 
     font-family: ${({ theme }) => theme.fonts.regular};
     font-size: ${RFValue(14)}px;
