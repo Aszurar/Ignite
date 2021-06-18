@@ -10,10 +10,12 @@ interface IconProps {
 interface ContainerProps extends IconProps {
     isActive: boolean;
 }
+
 export const Container = styled(TouchableOpacity)<ContainerProps>`
+    
     background-color: ${ ({ isActive, type, theme }) => isActive ? 
-        ( type === 'up' ? theme.colors.success_light : theme.colors.attention_light) : theme.colors.background};
-    /* ${ ({ isActive, type, theme}) => isActive && type === 'up' && css`background-color: ${theme.colors.success_light}`}
+    ( type === 'up' ? theme.colors.success_light : theme.colors.attention_light) : theme.colors.background};
+    /*${ ({ isActive, type, theme}) => isActive && type === 'up' && css`background-color: ${theme.colors.success_light}`}
     ${ ({ isActive, type, theme}) => isActive && type === 'down' && css`background-color: ${theme.colors.attention_light}`} */
     
     width: 48%;
