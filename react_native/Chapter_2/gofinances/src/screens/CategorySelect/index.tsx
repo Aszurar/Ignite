@@ -24,7 +24,12 @@ interface CategorySelectProps {
     closeSelectCategory: () => void; // função que fechará a seleção de categorias
 }
 
-export function CategorySelect({ category, setCategory, closeSelectCategory }: CategorySelectProps) {
+export function CategorySelect(
+{ 
+    category, 
+    setCategory, 
+    closeSelectCategory 
+}: CategorySelectProps) {
     return(
         <Container>
             <Header>
@@ -49,7 +54,9 @@ export function CategorySelect({ category, setCategory, closeSelectCategory }: C
             />
 
             <Footer>
-                <Button text="Selecionar" />
+                <Button text="Selecionar" 
+                    onPress={closeSelectCategory}
+                />
             </Footer>
         </Container>
         );

@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
+import { Modal } from 'react-native';
 import { Button } from '../../components/Form/Button';
-import { CategorySelect } from '../../components/Form/CategorySelect';
+import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
 import { Input } from '../../components/Form/Input';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
+import { CategorySelect } from '../CategorySelect';
 import { Container, Fields, Form, Header, Title, TypeTransactionContainer } from './styles';
 
 export function Register(){
     const [transactionType, settransactionType] = useState(''); 
-    
+    const [categoryModal, setCategoryModal] = useState(false);
 
     function handleSelectTransactionType(type: 'up' | 'down') {
         settransactionType(type);
-        console.log(transactionType);
-        
+    }
+
+    function handleCategoryModalOpen() {
+        setCategoryModal(true);
+    }
+    console.log(categoryModal);
+    
+    function handleCategoryModalClose(){
+        setCategoryModal(false);
     }
 
     return (
@@ -53,11 +62,22 @@ export function Register(){
                         />
                     </TypeTransactionContainer>
 
-                    <CategorySelect text="Categoria"/>
+                    <CategorySelectButton  
+                        text="Categoria"
+                        onPress={handleCategoryModalOpen}
+                    />
+
                 </Fields>
 
                 <Button text="Enviar"/>
             </Form>
+
+            <Modal visible={categoryModal}>
+                <CategorySelect 
+                    closeSelectCategory={handleCategoryModalClose}
+                />
+            </Modal>
         </Container>
     )
+        
 }

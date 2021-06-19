@@ -1,13 +1,14 @@
 import React from 'react';
 import { Category, Container, Icon } from './styles';
 
-interface CategorySelectProps {
+interface CategorySelectButtonProps {
     text: string;
+    onPress: () => void;
 }
 
-export function CategorySelect({ text } : CategorySelectProps) {
+export function CategorySelectButton({ text, onPress } : CategorySelectButtonProps) {
     return(
-        <Container>
+        <Container onPress={onPress}>
             <Category>{text}</Category>
             <Icon name="chevron-down"/>
         </Container>
