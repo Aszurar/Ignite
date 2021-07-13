@@ -10,6 +10,13 @@ import { Container, Fields, Form, Header, Title, TypeTransactionContainer } from
 export function Register(){
     const [transactionType, settransactionType] = useState(''); 
     const [categoryModal, setCategoryModal] = useState(false);
+    const [category, setCategory] = useState({
+        key: 'category',
+        name: 'Categoria',
+    });
+
+    const [name, setName] = useState('');
+    const [amount, setAmount] = useState(0);
 
     function handleSelectTransactionType(type: 'up' | 'down') {
         settransactionType(type);
@@ -18,10 +25,21 @@ export function Register(){
     function handleCategoryModalOpen() {
         setCategoryModal(true);
     }
-    console.log(categoryModal);
     
     function handleCategoryModalClose(){
         setCategoryModal(false);
+    }
+
+    function handleSubmitForm(){
+        const data = {
+            name,
+            amount,
+            transactionType,
+            category
+        }
+
+        console.log('Formulário Padrão: ',data);
+        
     }
 
     return (
@@ -37,13 +55,15 @@ export function Register(){
                         autoCapitalize="sentences"
                         autoCorrect={true} 
                         autoFocus={true}
-                        returnKeyType="next"
+                        onChangeText={text => setName(text)}
+                        returnKeyType="next"                        
                         />
                     <Input 
                         placeholder="Preço" 
                         autoCapitalize="none"
                         autoCorrect={false} 
                         keyboardType="numeric"
+                        onChangeText={value => setName(value)}
                         returnKeyType="next"
                         />
 
@@ -63,17 +83,21 @@ export function Register(){
                     </TypeTransactionContainer>
 
                     <CategorySelectButton  
-                        text="Categoria"
+                        text={category.name}
                         onPress={handleCategoryModalOpen}
                     />
 
                 </Fields>
 
-                <Button text="Enviar"/>
+                <Button text="Enviar"
+                    onPress={handleSubmitForm}
+                />
             </Form>
 
             <Modal visible={categoryModal}>
-                <CategorySelect 
+                <CategorySelect
+                    category={category}
+                    setCategory={setCategory}
                     closeSelectCategory={handleCategoryModalClose}
                 />
             </Modal>

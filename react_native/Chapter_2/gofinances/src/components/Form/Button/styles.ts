@@ -1,8 +1,11 @@
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+interface ButtonProps {
+    cor?: string;
+}
 
-export const Container = styled(TouchableOpacity)`
+export const Container = styled(TouchableOpacity)<ButtonProps>`
     background-color: ${({ theme }) => theme.colors.secundary};
     align-items: center;
     width: 100%;

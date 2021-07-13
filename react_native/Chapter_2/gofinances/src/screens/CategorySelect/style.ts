@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -26,17 +26,26 @@ export const Title = styled.Text`
     color: ${({ theme }) => theme.colors.shape};
 `;
 
-export const Category = styled.View`
+interface CategoryProps {
+    isActive: boolean;
+}
+
+export const Category = styled.TouchableOpacity<CategoryProps>`
     width: 100%;
     padding: ${RFValue(15)}px;
-
+    
     flex-direction: row;
     align-items: center;
+
+    ${({isActive, theme}) => isActive && css`background-color:${theme.colors.secundary_light}`}
+
 `;
 
-export const Icon = styled(Feather)`
+export const Icon = styled(Feather)<CategoryProps>`
     margin-right: ${RFValue(16)}px;
     font-size: ${RFValue(20)}px;
+    color: ${({isActive, theme}) => isActive ? theme.colors.primary : theme.colors.text_dark}
+
 `;
 
 export const Name = styled.Text`

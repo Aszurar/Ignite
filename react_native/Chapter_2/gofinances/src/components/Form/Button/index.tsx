@@ -5,11 +5,13 @@ import { Container, Title } from './styles';
 
 interface ButtonProps extends TouchableOpacityProps {
     text: string;
+    color?: string;
 }
 
-export function Button({text, ...rest}: ButtonProps) {
+export function Button({text, color, ...rest}: ButtonProps) {
     return(
         <Container
+            cor={color}
             {...rest}
         >
             <Title>{ text }</Title>

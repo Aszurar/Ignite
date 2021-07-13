@@ -17,7 +17,7 @@ import {
     UserName
 } from './styled';
 
-export interface DataTransactionCardProps  extends DataProps{
+export interface DataTransactionCardProps extends DataProps{
     id: string;
 }
 
