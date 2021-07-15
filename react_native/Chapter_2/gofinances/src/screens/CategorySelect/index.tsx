@@ -32,6 +32,10 @@ export function CategorySelect(
 }: CategorySelectProps) {
 
     function handleCategorySelect(category: Category) {
+        // const categoryData: Category = {
+        //     key: category.key,
+        //     name: category.name
+        // }
         setCategory(category)
     }
 

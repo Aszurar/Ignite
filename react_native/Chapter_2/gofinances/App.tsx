@@ -1,7 +1,10 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { StatusBar } from 'react-native'
 import { ThemeProvider } from 'styled-components/native';
 import AppLoading from 'expo-app-loading';
+import { NavigationContainer } from '@react-navigation/native';
+
 import { 
   useFonts,
   Poppins_400Regular,
@@ -10,7 +13,7 @@ import {
 } from '@expo-google-fonts/poppins'
 
 import theme from './src/global/styles/theme';
-import { Register } from './src/screens/Register';
+import { AppRoutes } from './src/routes/app.routes';
 
 
 export default function App() {
@@ -26,7 +29,9 @@ export default function App() {
   return(
     <ThemeProvider theme={theme}>
       <StatusBar barStyle={'light-content'} backgroundColor={'#5636D3'}/>
-      <Register />
+      <NavigationContainer>
+        <AppRoutes />
+      </NavigationContainer>
     </ThemeProvider>
   )
 }
