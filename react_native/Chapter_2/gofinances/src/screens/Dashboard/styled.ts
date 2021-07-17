@@ -3,8 +3,9 @@ import { FlatList } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
-
 import { DataTransactionCardProps } from '.';
+import { BorderlessButton } from "react-native-gesture-handler";
+
 export const Container = styled.View`
     flex: 1;
     background-color: ${(props) => props.theme.colors.background};
@@ -63,6 +64,7 @@ export const UserName = styled.Text`
     font-family: ${({ theme }) => theme.fonts.bold};
     line-height: 24px;
 `;
+export const LogoutIconButton = styled(BorderlessButton)``;
 
 export const PowerIcon = styled(Feather)`
 

@@ -14,7 +14,8 @@ import {
     User,
     UserGreeting,
     UserInfo,
-    UserName
+    UserName,
+    LogoutIconButton
 } from './styled';
 
 export interface DataTransactionCardProps extends DataProps{
@@ -71,7 +72,10 @@ export function Dashboard() {
                         </User>
 
                     </UserInfo>
-                    <PowerIcon name="power" />
+
+                    <LogoutIconButton>
+                        <PowerIcon name="power" />
+                    </LogoutIconButton>
                 </Head>
             </Header>
             <HighlightCards>
