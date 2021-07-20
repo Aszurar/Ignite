@@ -18,7 +18,7 @@ export const Title = styled.Text`
 `;
 
 interface AmountProps {
-    type: 'positive' | 'negative';
+    type: 'up' | 'down';
 }
 
 export const Amount = styled.Text<AmountProps>`
@@ -27,7 +27,7 @@ export const Amount = styled.Text<AmountProps>`
 
     margin-top: ${RFValue(2)}px;
 
-    color: ${( { type, theme } ) => type === 'positive' ? theme.colors.success : theme.colors.attention}
+    color: ${( { type, theme } ) => type === 'up' ? theme.colors.success : theme.colors.attention}
 `;
 
 export const Footer = styled.View`

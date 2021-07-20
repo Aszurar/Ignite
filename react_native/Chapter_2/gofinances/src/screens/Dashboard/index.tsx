@@ -1,4 +1,5 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import { HighlightCard } from '../../components/HighlightCard'
 import { TransactionCard, DataProps } from '../../components/TransactionCard';
 import {
@@ -23,41 +24,52 @@ export interface DataTransactionCardProps extends DataProps{
 }
 
 export function Dashboard() {
-    const data: DataTransactionCardProps[] = [
-        {
-            id: '1',
-            type: 'positive',
-            title:"Desenvolvimento de site", 
-            amount:"R$ 12.000,00",
-            date:"13/04/2020",  
-            category: {
-                name:"Vendas",
-                icon: "dollar-sign",
+    const [data, setData] = useState<DataTransactionCardProps[]>([]);
+
+    async function loadData() {
+        const dataKey = "@gonfinances:transactions";
+
+        const response = await AsyncStorage.getItem(dataKey);
+        const transactions: DataTransactionCardProps[] = response ? JSON.parse(response) : [];
+        const transactionsFormatted: DataTransactionCardProps[] = 
+        transactions.map((transaction: DataTransactionCardProps) => {
+            const amount = Number(transaction.amount)
+            .toLocaleString('pt-BR',
+                {
+                    style: 'currency',
+                    currency: 'BRL'
+                }
+            );
+            console.log(transaction);
+            
+            const date = Intl.DateTimeFormat('pt-BR', {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            }).format(new Date(transaction.date));
+
+            return {
+                id: transaction.id,
+                type: transaction.type,
+                name: transaction.name,
+                date,
+                amount: amount,
+                category: transaction.category,
             }
-        }, 
-        {
-            id: '2',
-            type: 'negative',
-            title:"Hamburgueria Pizzy", 
-            amount:"R$ 59,00",
-            date:"13/04/2020",
-            category: {
-                name:"Alimentação",
-                icon: "coffee",
-            },
-        }, 
-        {
-            id: '3',
-            type: 'negative',
-            title:"Aluguel de Apartamento", 
-            amount:"R$ 500,00",
-            date:"13/04/2020",
-            category: {
-                name:"Casa",
-                icon: "home",
-            },
-        }
-    ]
+
+        });
+
+        setData(transactionsFormatted);
+    }
+    // async function removeAll(){
+    //     const dataKey = "@gonfinances:transactions";
+    //     await AsyncStorage.removeItem(dataKey);
+    // }
+    useEffect(() => {
+        // removeAll();
+        loadData();
+        
+    }, [])
 
     return (
         <Container>
