@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
 import { HighlightCard } from '../../components/HighlightCard'
 import { TransactionCard, DataProps } from '../../components/TransactionCard';
 import {
@@ -30,24 +31,26 @@ export function Dashboard() {
         const dataKey = "@gonfinances:transactions";
 
         const response = await AsyncStorage.getItem(dataKey);
+        
         const transactions: DataTransactionCardProps[] = response ? JSON.parse(response) : [];
+        
         const transactionsFormatted: DataTransactionCardProps[] = 
         transactions.map((transaction: DataTransactionCardProps) => {
+            
             const amount = Number(transaction.amount)
             .toLocaleString('pt-BR',
-                {
-                    style: 'currency',
-                    currency: 'BRL'
-                }
+            {
+                style: 'currency',
+                currency: 'BRL'
+            }
             );
-            console.log(transaction);
             
             const date = Intl.DateTimeFormat('pt-BR', {
                 day: "2-digit",
                 month: "2-digit",
                 year: "numeric",
             }).format(new Date(transaction.date));
-
+            
             return {
                 id: transaction.id,
                 type: transaction.type,
@@ -56,9 +59,9 @@ export function Dashboard() {
                 amount: amount,
                 category: transaction.category,
             }
-
+            
         });
-
+        
         setData(transactionsFormatted);
     }
     // async function removeAll(){
@@ -68,8 +71,12 @@ export function Dashboard() {
     useEffect(() => {
         // removeAll();
         loadData();
-        
     }, [])
+
+    useFocusEffect(useCallback(() => {
+        loadData();
+    }, 
+    []));
 
     return (
         <Container>
