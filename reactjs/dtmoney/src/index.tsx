@@ -15,9 +15,12 @@ createServer({
 
 
   seeds(server){
-  // Carregando dados  padrões no BD, na tabela de transação, para que sempre se tenha os dados abaixo por padrão no BD e ele nunca comece vazio.
+  // Carregando dados  padrões no BD, na tabela de transação, para que sempre se tenha os dados abaixo por padrão no BD 
+  // e ele nunca comece vazio.
     server.db.loadData({
       transactions: [
+        // Sempre que for passado o nome da tabela aqui, é necessário coloca-la no plural, nesse caso a tabela de dados é transaction, e auqi
+        // passamos como transactions
         {
           id: 1,
           title: 'Freelance de website',
@@ -41,13 +44,13 @@ createServer({
 
   routes() {
 
-
     this.namespace = 'api'
     // para todas as rotas de api  utilizem as respostas abaixo
     this.get('/transactions', () => {
       // em uma chamada do tipo get, retorne essa resposta
       return this.schema.all('transaction')
       // retornando todas instÂncias da tabela de transações.
+      // schema se refera ao BD do mirageJS
     })
 
     this.post('/transactions', (schema, request) => {
