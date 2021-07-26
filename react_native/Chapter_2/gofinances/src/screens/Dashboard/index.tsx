@@ -23,10 +23,15 @@ import {
     LoadingStyle
 } from './styled';
 
+interface HighlightCardElementProps {
+    amount: string;
+    lastTransactionDate: string;
+}
+
 interface HighlightCardProps {
-    deposit: string;
-    expensive: string;
-    total: string;
+    deposit: HighlightCardElementProps;
+    expensive: HighlightCardElementProps;
+    total: HighlightCardElementProps;
 }
 export interface DataTransactionCardProps extends DataProps{
     id: string;
@@ -34,9 +39,24 @@ export interface DataTransactionCardProps extends DataProps{
 
 export function Dashboard() {
     const [data, setData] = useState<DataTransactionCardProps[]>([]);
-    const [highlightCardsData, setHilightCardsData] = useState<HighlightCardProps>({} as HighlightCardProps);
+    const [highLightCardsData, setHiLightCardsData] = useState<HighlightCardProps>({} as HighlightCardProps);
     const [isLoading, setIsLoading] = useState(true);
     const theme = useTheme();
+
+    function getLastTransactionDate(transactions: DataTransactionCardProps[], type: 'up' | 'down') {
+        const lastTransactionDate = new Date(Math.max
+        .apply(Math, transactions
+        .filter(transaction => transaction.type === type)
+        .map(transaction => new Date(transaction.date).getTime())));
+        
+        const lastTransactionDateMonth = lastTransactionDate
+        .toLocaleString('pt-BR', {
+            month: 'long',
+        })
+        const lastTransactionDateDay = lastTransactionDate.getDate();
+
+        return `dia ${lastTransactionDateDay} de ${lastTransactionDateMonth}`;
+    }
 
     async function loadData() {
         const dataKey = "@gonfinances:transactions";
@@ -45,6 +65,11 @@ export function Dashboard() {
         const response = await AsyncStorage.getItem(dataKey);
         
         const transactions: DataTransactionCardProps[] = response ? JSON.parse(response) : [];
+
+        //rescue the last transactions date
+        const lastTransactionDepositDate = getLastTransactionDate(transactions, 'up');
+        const lastTransactionExpensiveDate = getLastTransactionDate(transactions, 'down');
+        const lastTransactionTotalDate = `01 à ${lastTransactionExpensiveDate}`;
         
         const transactionsFormatted: DataTransactionCardProps[] = 
         transactions.map((transaction: DataTransactionCardProps) => {
@@ -81,6 +106,7 @@ export function Dashboard() {
             
         });
 
+        
         setData(transactionsFormatted);
 
         const depositSumFormatted = Number(depositSum)
@@ -103,24 +129,28 @@ export function Dashboard() {
             currency: 'BRL',
         });
 
-        setHilightCardsData(
+        setHiLightCardsData(
             {
-                deposit: depositSumFormatted,
-                expensive: expensiveSumFormatted,
-                total: totalAmountFormatted,
-            }
-        );
-
-        console.log(highlightCardsData.deposit);
-        console.log(highlightCardsData.expensive);
-        console.log(highlightCardsData.total);
+               deposit: {
+                    amount: depositSumFormatted,
+                    lastTransactionDate: `Última entrada ${lastTransactionDepositDate}`,
+               },
+               expensive: {
+                    amount: expensiveSumFormatted,
+                    lastTransactionDate: `Última saída ${lastTransactionExpensiveDate}`,
+               },
+               total: {
+                    amount: totalAmountFormatted,
+                    lastTransactionDate: lastTransactionTotalDate,
+               }
+            });
 
         setIsLoading(false);
     }
-    // async function removeAll(){
-    //     const dataKey = "@gonfinances:transactions";
-    //     await AsyncStorage.removeItem(dataKey);
-    // }
+    async function removeAll(){
+        const dataKey = "@gonfinances:transactions";
+        await AsyncStorage.removeItem(dataKey);
+    }
     useEffect(() => {
         // removeAll();
         loadData();
@@ -159,9 +189,9 @@ export function Dashboard() {
                         </Head>
                     </Header>
                     <HighlightCards>
-                        <HighlightCard type="up" title="Entradas" amount={highlightCardsData.deposit} lastTransaction="Última entrada dia 13 de abril" />
-                        <HighlightCard type="down" title="Saídas" amount={highlightCardsData.expensive} lastTransaction="Última saída dia 03 de abril" />
-                        <HighlightCard type="total" title="Total" amount={highlightCardsData.total} lastTransaction="01 à 16 de abril" />
+                        <HighlightCard type="up" title="Entradas" amount={highLightCardsData.deposit.amount} lastTransaction={highLightCardsData.deposit.lastTransactionDate}/>
+                        <HighlightCard type="down" title="Saídas" amount={highLightCardsData.expensive.amount} lastTransaction={highLightCardsData.expensive.lastTransactionDate}/>
+                        <HighlightCard type="total" title="Total" amount={highLightCardsData.total.amount} lastTransaction={highLightCardsData.total.lastTransactionDate} />
                     </HighlightCards>
 
                     <Transaction>
