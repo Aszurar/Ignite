@@ -10,14 +10,14 @@ export const Container = styled.View<ContainerProps>`
     flex-direction: row;
     justify-content: space-between;
     
-    padding: ${RFValue(13)}px  ${RFValue(16)}px ${RFValue(13)}px ${RFValue(16)}px;
+    padding: ${RFValue(13)}px  ${RFValue(16)}px ${RFValue(13)}px ${RFValue(20)}px;
 
     background-color: ${({theme}) => theme.colors.shape};
     border-radius: 5px;
     border-left-width : 5px;
     border-left-color: ${({color}) => color};
     
-    margin-bottom: 10px;
+    margin-bottom: ${RFValue(10)}px;
 ;
 
 `;

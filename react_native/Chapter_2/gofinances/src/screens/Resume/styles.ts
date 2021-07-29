@@ -24,7 +24,11 @@ export const Title = styled.Text`
     color: ${( { theme }) => theme.colors.shape};
 `;
 
-export const TransactionTypesList = styled.View`
-    padding: ${RFValue(24)}px;
-
-`;
+export const TransactionTypesList = styled.ScrollView.attrs(
+    {
+        contentContainerStyle: {
+            // flex: 1,
+            padding: RFValue(24),
+        }
+    }
+) ``;
