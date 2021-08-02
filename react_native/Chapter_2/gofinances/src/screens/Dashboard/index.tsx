@@ -1,9 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import { HighlightCard } from '../../components/HighlightCard'
+import { LoadingStyle } from '../../components/LoadingStyle';
 import { TransactionCard, DataProps } from '../../components/TransactionCard';
 import {
     Container,
@@ -20,7 +19,6 @@ import {
     UserInfo,
     UserName,
     LogoutIconButton,
-    LoadingStyle
 } from './styled';
 
 interface HighlightCardElementProps {
@@ -41,7 +39,6 @@ export function Dashboard() {
     const [data, setData] = useState<DataTransactionCardProps[]>([]);
     const [highLightCardsData, setHiLightCardsData] = useState<HighlightCardProps>({} as HighlightCardProps);
     const [isLoading, setIsLoading] = useState(true);
-    const theme = useTheme();
 
     function getLastTransactionDate(transactions: DataTransactionCardProps[], type: 'up' | 'down') {
         const lastTransactionDate = new Date(Math.max
@@ -166,9 +163,7 @@ export function Dashboard() {
     return (
         <Container>
             { isLoading ? 
-            <LoadingStyle>
-                <ActivityIndicator size="large" color={theme.colors.primary} />
-            </LoadingStyle>
+                <LoadingStyle />
             :
                 <>
                     <Header>

@@ -11,11 +11,6 @@ export const Container = styled.View`
     background-color: ${(props) => props.theme.colors.background};
 `;
 
-export const LoadingStyle = styled.View`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-`;
 
 export const Header = styled.View`
     background-color: ${({ theme}) => theme.colors.primary};

@@ -14,19 +14,16 @@ interface ContainerProps extends IconProps {
 
 // ex
 export const Container = styled.View<ContainerProps>`
-    background-color: ${ ({ isActive, type, theme }) => isActive ? 
-    ( type === 'up' ? theme.colors.success_light : theme.colors.attention_light) : theme.colors.background};
-    /*${ ({ isActive, type, theme}) => isActive && type === 'up' && css`background-color: ${theme.colors.success_light}`}
-    ${ ({ isActive, type, theme}) => isActive && type === 'down' && css`background-color: ${theme.colors.attention_light}`} */
+    /* background-color: ${ ({ isActive, type, theme }) => isActive ? 
+    ( type === 'up' ? theme.colors.success_light : theme.colors.attention_light) : theme.colors.background}; */
+    ${ ({ isActive, type, theme}) => isActive && type === 'up' && css`background-color: ${theme.colors.success_light}`}
+    ${ ({ isActive, type, theme}) => isActive && type === 'down' && css`background-color: ${theme.colors.attention_light}`}
     
     width: 48%;
     
-    
     border: ${({ isActive }) => isActive ? 0 : 1.5 }px solid ${({ theme }) => theme.colors.border};
     border-radius: 5px;
-    
-    /* opacity: 0.2; */
-    `;
+`;
 
 export const Button = styled(RectButton)`
 

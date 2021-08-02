@@ -1,6 +1,5 @@
 import React from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
-
 import { Button, Container, Icon, Title } from './styles';
 
 interface TransactionTypeButtonProps extends RectButtonProps {
