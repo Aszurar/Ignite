@@ -13,7 +13,13 @@ const icon = {
     down: 'arrow-down'
 }
 
-export function TransactionTypeButton({type, text, isActive, ...rest}: TransactionTypeButtonProps){
+export function TransactionTypeButton(
+{ 
+    type, 
+    text,
+    isActive,
+    ...rest
+}: TransactionTypeButtonProps){
     return(
         <Container
             type={type}
