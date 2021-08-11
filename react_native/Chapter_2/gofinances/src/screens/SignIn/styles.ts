@@ -1,4 +1,4 @@
-import { RFValue } from 'react-native-responsive-fontsize';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
@@ -40,12 +40,12 @@ export const Subtitle = styled.Text`
     `;
 
 export const LoginContainer = styled.View`
-    height: ${RFValue(128)}px;
     width: 100%;
     padding: 0 ${RFValue(32)}px;
 
-    margin-top: -${RFValue(26)}px;
+    margin-top: ${RFPercentage(-4)}px;
     justify-content: space-between;
+
 `;
 
 export const Footer = styled.View`

@@ -8,12 +8,17 @@ import {
     Subtitle,
     Title
 } from './styles';
-
+import GoogleIcon from '../../assets/google-icon.svg';
+import AppleIcon from '../../assets/apple-icon.svg';
 import LogoIcon from '../../assets/logo.svg';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { LoginButton } from '../../components/LoginButton';
+import { useAuth } from '../../hooks/auth';
 
 export function SignIn() {
+    const { user } = useAuth();
+    console.log(user.);
+    
     return(
         <>
         <Container>
@@ -39,16 +44,16 @@ export function SignIn() {
             </Header>
     
             <Footer>
-                {/* <LoginContainer>
+                 <LoginContainer>
                     <LoginButton 
-                        type="google"
+                        svg={GoogleIcon}
                         title="Entrar com Google"
                     /> 
                     <LoginButton 
-                        type="apple"
+                        svg={AppleIcon}
                         title="Entrar com Apple"
                     />
-                </LoginContainer> */}
+                </LoginContainer>
             </Footer>
         </Container>    
     </>
