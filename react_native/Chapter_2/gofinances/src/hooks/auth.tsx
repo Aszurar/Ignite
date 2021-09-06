@@ -19,7 +19,7 @@ interface AuthContextProps {
 
 interface AuthorizationResponse {
     params: {
-        accessToken: string;
+        access_token: string;
     }
     type: string;
 }
@@ -32,7 +32,7 @@ function AuthProvider({ children }: AuthProviderProps){
 
     async function signInWithGoogle(){
         try {
-            const CLIENT_ID = '611591851196-6tv6fe265kh9bfib0ipihda7u0u82u0o.apps.googleusercontent.com';
+            const CLIENT_ID = '671483792112-jli15j6u1bhqj1lumj327p48et5iecmn.apps.googleusercontent.com';
             const REDIRECT_URI = 'https://auth.expo.io/@aszurar/gofinances';
             const RESPONSE_TYPE = 'token';
             const SCOPE = encodeURI('profile email');
@@ -44,7 +44,7 @@ function AuthProvider({ children }: AuthProviderProps){
             .startAsync({authUrl}) as AuthorizationResponse;
             
             if (type === 'success') {
-                const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.accessToken}`);
+                const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
                 const userInfo = await response.json();
 
                 setUser({
