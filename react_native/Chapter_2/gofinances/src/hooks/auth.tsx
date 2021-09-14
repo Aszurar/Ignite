@@ -4,7 +4,9 @@ import React, {
     useContext, 
     useState 
 } from "react";
+
 import * as AuthSession from 'expo-auth-session';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 const { CLIENT_ID } = process.env;
 const { REDIRECT_URI } = process.env;
@@ -23,6 +25,7 @@ interface userProps {
 interface AuthContextProps {
     user: userProps;
     signInWithGoogle(): Promise<void>;
+    signInWithApple(): Promise<void>;
 }
 
 interface AuthorizationResponse {
@@ -59,17 +62,45 @@ function AuthProvider({ children }: AuthProviderProps){
                     email: userInfo.email,
                     photo: userInfo.picture
                 });
-                console.log(response);
+                console.log(userInfo);
+
             }
             
             
         } catch (error) {
-            throw new Error(error);
+            throw new Error(error as string);
+        }
+    }
+    async function signInWithApple(){
+        try {
+            const credential = await AppleAuthentication.signInAsync({
+                requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL
+                ]
+            });
+
+            if (credential) {
+                const userlogged = {
+                    id: String(credential.user),
+                    name: credential.fullName!.givenName!,
+                    email: credential.email!,
+                    photo: undefined
+                };
+                setUser(userlogged);
+                // await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
+            }        
+        }catch (error) {
+            throw new Error(error as string);
         }
     }
 
     return(
-        <AuthContext.Provider value={{user, signInWithGoogle }}>
+        <AuthContext.Provider value={{
+            user, 
+            signInWithGoogle, 
+            signInWithApple 
+            }}>
             {children}
         </AuthContext.Provider>
     )
