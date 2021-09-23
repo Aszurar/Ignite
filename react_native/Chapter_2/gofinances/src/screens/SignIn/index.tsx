@@ -1,5 +1,9 @@
-import React from 'react';
-import { Alert } from 'react-native';
+import React, { useState } from 'react';
+import { 
+    ActivityIndicator, 
+    Alert, 
+    Platform 
+} from 'react-native';
 import { 
     Container, 
     Footer, 
@@ -15,25 +19,32 @@ import LogoIcon from '../../assets/logo.svg';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { LoginButton } from '../../components/LoginButton';
 import { useAuth } from '../../hooks/auth';
+import { useTheme } from 'styled-components';
 
 export function SignIn() {
     const { signInWithGoogle, signInWithApple } = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
+    const theme = useTheme();
 
     async function handleSignInWithGoogle(){
         try {
-            await signInWithGoogle();
+            setIsLoading(true);
+            return await signInWithGoogle();
         } catch (error) {
             console.log(error);
             Alert.alert('Não foi possível conectar a conta Google');
+            setIsLoading(false);
         }
     }
 
     async function handleSignInWithApple(){
         try {
-            await signInWithApple();
+            setIsLoading(true);
+            return await signInWithApple();
         } catch (error) {
             console.log(error);
             Alert.alert('Não foi possível conectar a conta Apple');
+            setIsLoading(false);
         }
     }
     return(
@@ -66,13 +77,24 @@ export function SignIn() {
                         svg={GoogleIcon}
                         title="Entrar com Google"
                         onPress={handleSignInWithGoogle}
-                    /> 
-                    <LoginButton 
-                        svg={AppleIcon}
-                        title="Entrar com Apple"
-                        onPress={handleSignInWithApple}
                     />
+                    { Platform.OS === 'ios' && 
+                        <LoginButton 
+                            svg={AppleIcon}
+                            title="Entrar com Apple"
+                            onPress={handleSignInWithApple}
+                        />
+                    }   
                 </LoginContainer>
+
+                {
+                    isLoading && 
+                    (<ActivityIndicator 
+                        size="large" 
+                        color={theme.colors.shape} 
+                        style={{marginTop: RFValue(18)}}
+                    />)
+                }
             </Footer>
         </Container>    
     </>

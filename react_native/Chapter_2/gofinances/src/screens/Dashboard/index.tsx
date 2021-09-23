@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { HighlightCard } from '../../components/HighlightCard'
 import { LoadingStyle } from '../../components/LoadingStyle';
 import { TransactionCard, DataProps } from '../../components/TransactionCard';
+import { useAuth } from '../../hooks/auth';
 import {
     Container,
     Head,
@@ -39,11 +40,23 @@ export function Dashboard() {
     const [data, setData] = useState<DataTransactionCardProps[]>([]);
     const [highLightCardsData, setHiLightCardsData] = useState<HighlightCardProps>({} as HighlightCardProps);
     const [isLoading, setIsLoading] = useState(true);
+    const { signOut, user } = useAuth();
+    const dataKey = `@gonfinances:transactions_user:${user.id}`;
+    
+    function getLastTransactionDate(
+        transactions: DataTransactionCardProps[], 
+        type: 'up' | 'down'
+        ){
+        
+        const transactionsFiltered = transactions
+        .filter(transaction => transaction.type === type);
 
-    function getLastTransactionDate(transactions: DataTransactionCardProps[], type: 'up' | 'down') {
+        if(transactionsFiltered.length === 0){
+            return 0;
+        }
+            
         const lastTransactionDate = new Date(Math.max
-        .apply(Math, transactions
-        .filter(transaction => transaction.type === type)
+        .apply(Math, transactionsFiltered
         .map(transaction => new Date(transaction.date).getTime())));
         
         const lastTransactionDateMonth = lastTransactionDate
@@ -56,7 +69,7 @@ export function Dashboard() {
     }
 
     async function loadData() {
-        const dataKey = "@gonfinances:transactions";
+        
         let expensiveSum = 0;
         let depositSum = 0;
         const response = await AsyncStorage.getItem(dataKey);
@@ -66,7 +79,9 @@ export function Dashboard() {
         //rescue the last transactions date
         const lastTransactionDepositDate = getLastTransactionDate(transactions, 'up');
         const lastTransactionExpensiveDate = getLastTransactionDate(transactions, 'down');
-        const lastTransactionTotalDate = `01 à ${lastTransactionExpensiveDate}`;
+        const lastTransactionTotalDate = lastTransactionExpensiveDate === 0 ?
+        'Não há transações':
+        `01 à ${lastTransactionExpensiveDate}`;
         
         const transactionsFormatted: DataTransactionCardProps[] = 
         transactions.map((transaction: DataTransactionCardProps) => {
@@ -130,11 +145,15 @@ export function Dashboard() {
             {
                deposit: {
                     amount: depositSumFormatted,
-                    lastTransactionDate: `Última entrada ${lastTransactionDepositDate}`,
+                    lastTransactionDate: lastTransactionDepositDate === 0 ? 
+                    'Não há transações' :
+                    `Última entrada ${lastTransactionDepositDate}`,
                },
                expensive: {
                     amount: expensiveSumFormatted,
-                    lastTransactionDate: `Última saída ${lastTransactionExpensiveDate}`,
+                    lastTransactionDate: lastTransactionExpensiveDate === 0 ? 
+                    'Não há transações' :
+                    `Última saída ${lastTransactionExpensiveDate}`,
                },
                total: {
                     amount: totalAmountFormatted,
@@ -145,7 +164,6 @@ export function Dashboard() {
         setIsLoading(false);
     }
     async function removeAll(){
-        const dataKey = "@gonfinances:transactions";
         await AsyncStorage.removeItem(dataKey);
     }
     useEffect(() => {
@@ -169,16 +187,18 @@ export function Dashboard() {
                     <Header>
                         <Head>
                             <UserInfo>
-                                <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/64987824?s=400&u=51e8a76f68447d04bb10d3f57e77df673874bad6&v=4' }} />
+                                <Photo source={{ uri: user.photo }} />
 
                                 <User>
                                     <UserGreeting>Olá,</UserGreeting>
-                                    <UserName>Lucas de Lima</UserName>
+                                    <UserName>{user.name}</UserName>
                                 </User>
 
                             </UserInfo>
 
-                            <LogoutIconButton>
+                            <LogoutIconButton
+                                onPress={signOut}
+                            >
                                 <PowerIcon name="power" />
                             </LogoutIconButton>
                         </Head>

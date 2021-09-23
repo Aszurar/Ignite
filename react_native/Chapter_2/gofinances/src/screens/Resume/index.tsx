@@ -22,6 +22,7 @@ import {
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components/native';
 import { LoadingStyle } from '../../components/LoadingStyle';
+import { useAuth } from '../../hooks/auth';
 
 interface AmountTotalByCategoryListProps {
     key: string;
@@ -36,7 +37,7 @@ export function Resume() {
     const [amountTotalByCategoryList, setAmountTotalByCategoryList] = useState<AmountTotalByCategoryListProps[]>([]);
     const [selectDate, setSelectDate] = useState(new Date());
     const [isLoading, setIsLoading] = useState(false);
-    
+    const { user } = useAuth();
     const theme = useTheme();
     
     function handleDateChange(action: 'prev' | 'next') {
@@ -50,7 +51,7 @@ export function Resume() {
     async function loadData() {
         setIsLoading(true);
 
-        const dataKey = "@gonfinances:transactions";
+        const dataKey = `@gonfinances:transactions_user:${user.id}`;
         const response = await AsyncStorage.getItem(dataKey);
         const responseFormatted: DataTransactionCardProps[] = response ? JSON.parse(response) : [];
         const expensives = responseFormatted

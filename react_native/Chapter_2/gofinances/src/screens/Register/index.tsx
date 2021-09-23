@@ -24,6 +24,7 @@ import {
 } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 interface FormData {
     name: string;
@@ -56,7 +57,7 @@ export function Register(){
         resolver: yupResolver(schema)
     });
     const navigation = useNavigation();
-    
+    const { user } = useAuth();
     function handleSelectTransactionType(type: 'up' | 'down') {
         settransactionType(type);
     }
@@ -70,7 +71,7 @@ export function Register(){
     }
     
     async function handleSubmitForm(form: FormData){
-        const dataKey = "@gonfinances:transactions";
+        const dataKey = `@gonfinances:transactions_user:${user.id}`;
         
         if (!transactionType) {
             return Alert.alert('Por favor, selecione o tipo de transação.')
