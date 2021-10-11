@@ -9,13 +9,19 @@ import { Register } from '../screens/Register';
 import { Resume } from '../screens/Resume';
 
 
-const { Navigator, Screen } =  createBottomTabNavigator();
+type RootTabParamList  = {
+    Listagem: undefined;
+    Cadastrar: undefined;
+    Resumo: undefined;
+  };
+
+const RootTab =  createBottomTabNavigator<RootTabParamList>();
 
 export function AppRoutes() {
     const theme = useTheme();
 
     return (
-        <Navigator
+        <RootTab.Navigator
             screenOptions={{
                 headerShown: false,
                 tabBarActiveTintColor: theme.colors.secundary,
@@ -27,7 +33,7 @@ export function AppRoutes() {
                 }
             }}
         >
-            <Screen 
+            <RootTab.Screen 
                 name="Listagem" 
                 component={Dashboard} 
                 options={{
@@ -40,7 +46,7 @@ export function AppRoutes() {
                     ))
                 }}
                 />
-            <Screen 
+            <RootTab.Screen 
                 name="Cadastrar" 
                 component={Register} 
                 options={{
@@ -53,7 +59,7 @@ export function AppRoutes() {
                     ))
                 }}
             />
-            <Screen 
+            <RootTab.Screen 
                 name="Resumo" 
                 component={Resume} 
                 options={{
@@ -66,6 +72,6 @@ export function AppRoutes() {
                     ))
                 }}    
             />
-        </Navigator>
+        </RootTab.Navigator>
     );
 }
