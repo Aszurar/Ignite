@@ -5,7 +5,7 @@ import {
     CarImage, 
     ImageContainer, 
     ImageIndexer, 
-    ImageIndex
+    ImageIndex,
 } from './styles';
 
 interface ImageSliderProps {
