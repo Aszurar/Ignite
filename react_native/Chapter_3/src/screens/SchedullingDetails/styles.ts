@@ -22,7 +22,6 @@ export const SliderContainer = styled.View`
     margin-top: ${RFValue(32) + getStatusBarHeight()}px;
 `;
 
-
 export const Content = styled.ScrollView.attrs({
     contentContainerStyle: {
         paddingHorizontal: RFValue(24),
