@@ -3,6 +3,7 @@ import { StatusBar } from 'react-native';
 import { Acessory } from '../../components/Acessory';
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
+import { useNavigation } from '@react-navigation/native';
 
 import SpeedIcon from '../../assets/speed.svg';
 import AccelerationIcon from '../../assets/acceleration.svg';
@@ -30,6 +31,12 @@ import {
 import { SubmitButton } from '../../components/SubmitButton';
 
 export function CarDetails(){
+    const navigation = useNavigation<any>();
+
+    function handleScheduling(){
+        navigation.navigate('Scheduling');
+    }
+
     return (
         <Container>
             <StatusBar 
@@ -83,6 +90,7 @@ export function CarDetails(){
                     greenBackground={false}
                     disabled={false}
                     text="Escolher período do aluguel"
+                    onPress={handleScheduling}
                 />
             </Footer>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { BackButton } from '../../components/BackButton';
+import { useNavigation } from '@react-navigation/native';
 import ArrowSvg from '../../assets/arrow.svg';
 
 import {
@@ -20,6 +21,11 @@ import { Calendar } from '../../components/Calendar';
 
 export function Scheduling(){
     const theme = useTheme();
+    const navigation = useNavigation<any>();
+
+    function handleShedulingDetails(){
+        navigation.navigate('SchedulingDetails');
+    }
     return (
         <Container>
             <Header>
@@ -39,12 +45,12 @@ export function Scheduling(){
                 <RentalPeriod>
                     <DateInfo>
                         <DateTitle>DE</DateTitle>
-                        <DateValue selected={false}></DateValue>
+                        <DateValue selected={false}>18/06/2021</DateValue>
                     </DateInfo>
                     <ArrowSvg />
                     <DateInfo>
                         <DateTitle>Até</DateTitle>
-                        <DateValue selected={false}></DateValue>
+                        <DateValue selected={false}>18/06/2021</DateValue>
                     </DateInfo>
                 </RentalPeriod>
             </Header>
@@ -58,6 +64,7 @@ export function Scheduling(){
                     text="Confirmar"
                     greenBackground={false}
                     disabled={false}
+                    onPress={handleShedulingDetails}
                 />
             </Footer>
         </Container>

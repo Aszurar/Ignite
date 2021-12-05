@@ -6,6 +6,7 @@ import { ImageSlider } from '../../components/ImageSlider';
 import { Feather } from '@expo/vector-icons';
 import { SubmitButton } from '../../components/SubmitButton';
 import { useTheme } from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
 
 import SpeedIcon from '../../assets/speed.svg';
 import AccelerationIcon from '../../assets/acceleration.svg';
@@ -36,14 +37,19 @@ import {
     RentalPrice,
     RentalPriceDetails,
     RentalPriceLabel,
-    RentalPriceQuote,
+    RentalPriceQuota,
     RentalPriceTotal,
     SliderContainer,
 } from './styles';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-export function SchedullingDetails(){
+export function SchedulingDetails(){
     const theme = useTheme();
+    const navigation = useNavigation<any>();
+
+    function handleSchedulingComplete(){
+        navigation.navigate('SchedulingComplete');
+    }
     return (
         <Container>
             <StatusBar 
@@ -113,7 +119,7 @@ export function SchedullingDetails(){
                 <RentalPrice>
                     <RentalPriceLabel>TOTAL</RentalPriceLabel>
                     <RentalPriceDetails>
-                        <RentalPriceQuote>R$ 580 x3 diárias</RentalPriceQuote>
+                        <RentalPriceQuota>R$ 580 x3 diárias</RentalPriceQuota>
                         <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
                     </RentalPriceDetails>
                 </RentalPrice>
@@ -122,9 +128,10 @@ export function SchedullingDetails(){
 
             <Footer>
                 <SubmitButton 
-                    greenBackground={true}
+                    greenBackground
                     disabled={false}
                     text="Alugar agora"
+                    onPress={handleSchedulingComplete}
                 />
             </Footer>
 

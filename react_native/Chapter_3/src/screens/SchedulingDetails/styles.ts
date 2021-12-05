@@ -161,7 +161,7 @@ export const RentalPriceDetails = styled.View`
     justify-content: space-between;
 `;
 
-export const RentalPriceQuote = styled.Text`
+export const RentalPriceQuota = styled.Text`
     font-family: ${({ theme }) => theme.fonts.primary_500};
     font-size: ${RFValue(15)}px;
     color: ${({theme}) => theme.colors.title};

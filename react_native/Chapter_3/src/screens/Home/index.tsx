@@ -1,6 +1,7 @@
 import React from "react";
 import { StatusBar } from "react-native";
 import { CarCardData, CarCards } from "../../components/CarCards";
+import { useNavigation } from '@react-navigation/native';
 
 import {
     CarList,
@@ -12,6 +13,12 @@ import {
 } from "./styles";
 
 export function Home(){
+    const navigation = useNavigation<any>();
+
+    function handleCarDetails(){
+        navigation.navigate('CarDetails');
+    }
+    
     const carData: CarCardData[] = [
         {
             thumbnail: "https://production.autoforce.com/uploads/version/profile_image/3188/model_main_comprar-tiptronic_87272c1ff1.png",
@@ -89,7 +96,9 @@ export function Home(){
                 keyExtractor={item => item.name}
                 renderItem={
                     ({ item }) => 
-                        <CarCards data={item} 
+                        <CarCards 
+                            data={item} 
+                            onPress={handleCarDetails}
                         />
                 }
             />

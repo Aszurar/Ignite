@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled, { css } from 'styled-components/native';
 
@@ -16,7 +17,7 @@ export const Header = styled.View`
     align-items: flex-start;
 
     padding: 0 ${RFValue(24)}px;
-    padding-top: ${RFValue(30)}px;
+    padding-top: ${RFValue(30) + getStatusBarHeight()}px;
 `;
 
 export const Title = styled.Text`
@@ -40,7 +41,7 @@ export const RentalPeriod = styled.View`
 `;
 
 export const DateInfo = styled.View`
-    width: 30%;
+    width: 36%;
 `;
 
 export const DateTitle = styled.Text`
@@ -60,7 +61,7 @@ export const DateValue = styled.Text<DateValueProps>`
     font-family: ${({theme}) => theme.fonts.primary_500};
     font-size: ${RFValue(15)}px;
     color: ${({theme}) => theme.colors.background_secondary};
-
+    text-align: center;
     letter-spacing: ${Dimensions.get('window').width * 0.004}px;
     text-transform: uppercase;
 
