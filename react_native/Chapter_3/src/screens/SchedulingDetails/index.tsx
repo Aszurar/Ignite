@@ -1,6 +1,5 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { Acessory } from '../../components/Acessory';
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
 import { Feather } from '@expo/vector-icons';
@@ -42,6 +41,7 @@ import {
     SliderContainer,
 } from './styles';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { Accessory } from '../../components/Accessory';
 
 export function SchedulingDetails(){
     const theme = useTheme();
@@ -82,12 +82,12 @@ export function SchedulingDetails(){
                 </Details>
 
                 <Acessories>
-                    <Acessory icon={SpeedIcon} name="380km/h" />
-                    <Acessory icon={AccelerationIcon} name="3.2s" />
-                    <Acessory icon={ForceIcon} name="800 HP" />
-                    <Acessory icon={GasolineIcon} name="Gasoline" />
-                    <Acessory icon={ExchangeIcon} name="Auto" />
-                    <Acessory icon={PeopleIcon} name="2 pessoas" />
+                    <Accessory icon={SpeedIcon} name="380km/h" />
+                    <Accessory icon={AccelerationIcon} name="3.2s" />
+                    <Accessory icon={ForceIcon} name="800 HP" />
+                    <Accessory icon={GasolineIcon} name="Gasoline" />
+                    <Accessory icon={ExchangeIcon} name="Auto" />
+                    <Accessory icon={PeopleIcon} name="2 pessoas" />
                 </Acessories>
 
                 <RentalPeriod>

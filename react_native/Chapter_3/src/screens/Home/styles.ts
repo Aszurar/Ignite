@@ -2,7 +2,7 @@ import { FlatList } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 import LogoImg from '../../assets/logo.svg';
-import { CarCardData } from '../../components/CarCards';
+import { CarDTO } from '../../dtos/CarDTO';
 
 export const Container = styled.View`
     flex: 1;
@@ -38,7 +38,7 @@ export const Total = styled.Text`
 `;
 
 export const CarList = styled(
-    FlatList as new () => FlatList<CarCardData>
+    FlatList as new () => FlatList<CarDTO>
     ).attrs({
     showsVerticalScrollIndicator: false,
     contentContainerStyle: {
