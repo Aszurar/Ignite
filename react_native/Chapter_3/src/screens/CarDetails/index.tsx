@@ -25,7 +25,7 @@ import { CarDTO } from '../../dtos/CarDTO';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import { Accessory } from '../../components/Accessory';
 
-interface Params {
+export interface Params {
     car: CarDTO;
 }
 export function CarDetails(){
@@ -33,7 +33,7 @@ export function CarDetails(){
     const { params } = useRoute();
     const { car } = params as Params;
     function handleScheduling(){
-        navigation.navigate('Scheduling');
+        navigation.navigate('Scheduling', { car });
     }
 
     return (

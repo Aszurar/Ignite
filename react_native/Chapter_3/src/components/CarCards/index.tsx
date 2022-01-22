@@ -28,7 +28,7 @@ export function CarCards(
     }: CarCardsProps
 ){
 const MotorIcon = getAccessoryIcon(data.fuel_type);
-    return (
+return (
         <Container
             {...rest}
         >
