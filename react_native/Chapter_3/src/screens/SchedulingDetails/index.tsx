@@ -55,8 +55,9 @@ export function SchedulingDetails(){
     const theme = useTheme();
     const navigation = useNavigation<any>();
     const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>({} as RentalPeriodProps)
-    
-    const { params } = useRoute();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { params } = useRoute();  
     const { car, dates } = params as SchedulingDetailsParams;
     
     const rentalDays = Number(dates.length);
@@ -64,6 +65,7 @@ export function SchedulingDetails(){
     
     async function handleSchedulingComplete(){
         try{
+            setIsLoading(true);
             const response = await api.get(`/schedules_bycars/${car.id}`);
             const unavailable_dates = [
                 ...response.data.unavailable_dates,
@@ -74,8 +76,17 @@ export function SchedulingDetails(){
                 id: car.id,
                 unavailable_dates 
             });
+
+            await api.post('/schedules_byuser', {
+                user_id: 1,
+                car: car,
+                startDate: format(getPlatformDate(new Date(dates[0])), "dd/MM/yyyy"),
+                endDate: format(getPlatformDate(new Date(dates[dates.length - 1])), "dd/MM/yyyy"),
+            });
+
             navigation.navigate('SchedulingComplete');
         }catch(err){
+            setIsLoading(false);
             console.log(err);
             Alert.alert('Erro ao agendar o carro', 'Tente novamente mais tarde');
         }   
@@ -116,7 +127,7 @@ export function SchedulingDetails(){
                     
                     <Rent>
                         <Period>{car.rent.period}</Period>
-                        <Price>{car.rent.price}</Price>
+                        <Price>R$ {car.rent.price}</Price>
                     </Rent>
                 </Details>
 
@@ -171,9 +182,10 @@ export function SchedulingDetails(){
             <Footer>
                 <SubmitButton 
                     greenBackground
-                    disabled={false}
                     text="Alugar agora"
                     onPress={() => handleSchedulingComplete()}
+                    enabled={!isLoading}
+                    loading={isLoading}
                 />
             </Footer>
 

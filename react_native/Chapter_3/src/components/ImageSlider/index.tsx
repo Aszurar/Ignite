@@ -6,6 +6,7 @@ import {
     ImageContainer, 
     ImageIndexer, 
     ImageIndex,
+    SlideImgCar,
 } from './styles';
 
 interface ImageSliderProps {
@@ -16,17 +17,22 @@ export function ImageSlider({ imagesUrl }: ImageSliderProps){
     return (
         <Container>
             <ImageIndexer>
-                <ImageIndex active={true} />
-                <ImageIndex active={false} />
-                <ImageIndex active={false} />
-                <ImageIndex active={false} />
+                {imagesUrl.map((_, index) => (
+                    <ImageIndex key={String(index)} active={true} />
+                ))}
             </ImageIndexer>
    
-            <ImageContainer>
-                <CarImage
-                    source={{ uri: imagesUrl[0]}}
-                />
-            </ImageContainer>
+            <SlideImgCar
+                data={imagesUrl}
+                keyExtractor={(item) => item}
+                renderItem={({ item }) => (
+                    <ImageContainer>
+                        <CarImage
+                            source={{ uri: item}}
+                        />
+                    </ImageContainer>
+                )}
+            />
         </Container>
     );
 }

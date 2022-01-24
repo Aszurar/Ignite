@@ -54,7 +54,7 @@ export function Home(){
                 <Header>
                     <HeaderContent>
                         <Logo />
-                        <Total>Total de 12 carros</Total>
+                        <Total>Total de {cars.length} carros</Total>
                     </HeaderContent>
                 </Header>
             { isLoading ?

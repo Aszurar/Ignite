@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, FlatList } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
@@ -44,3 +44,9 @@ export const CarImage = styled.Image.attrs({
     width: ${RFValue(280)}px;
     height: ${RFValue(132.35)}px;
 `;
+
+export const SlideImgCar = styled(
+    FlatList as new () => FlatList<string>).attrs({
+        horizontal: true,
+        showsHorizontalScrollIndicator: false,
+    })``;

@@ -39,14 +39,10 @@ export function Scheduling(){
     const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>({} as RentalPeriodProps)
     
     function handleShedulingDetails(){
-        if(!rentalPeriod.startFormatted || !rentalPeriod.endFormatted){
-            Alert.alert('Aviso', 'Selecione um período para agendar o aluguel');
-        } else {
-            navigation.navigate('SchedulingDetails', {
-                car,
-                dates: Object.keys(markedDates)
-            });
-        }
+        navigation.navigate('SchedulingDetails', {
+            car,
+            dates: Object.keys(markedDates)
+        });
     }
 
     function handleChangeDate(date: DayProps) {
@@ -116,8 +112,8 @@ export function Scheduling(){
                 <SubmitButton 
                     text="Confirmar"
                     greenBackground={false}
-                    disabled={false}
                     onPress={handleShedulingDetails}
+                    enabled={!!rentalPeriod.startFormatted}
                 />
             </Footer>
         </Container>
