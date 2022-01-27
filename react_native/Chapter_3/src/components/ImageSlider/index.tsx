@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { ViewToken } from 'react-native';
 
 import {
     Container, 
@@ -13,12 +14,23 @@ interface ImageSliderProps {
     imagesUrl: string[];
 }
 
+interface ChangeImgProps {
+    viewableItems: ViewToken[];
+    changed: ViewToken[];
+}
+
 export function ImageSlider({ imagesUrl }: ImageSliderProps){
+    const [currentSlideImgIndex, setCurrentSlideImgIndex] = useState(0)
+    
+    const currentSlideImg = useRef((props: ChangeImgProps) => { 
+        setCurrentSlideImgIndex(props.viewableItems[0].index!);
+    })
+
     return (
         <Container>
             <ImageIndexer>
                 {imagesUrl.map((_, index) => (
-                    <ImageIndex key={String(index)} active={true} />
+                    <ImageIndex key={String(index)} active={currentSlideImgIndex === index} />
                 ))}
             </ImageIndexer>
    
@@ -30,8 +42,9 @@ export function ImageSlider({ imagesUrl }: ImageSliderProps){
                         <CarImage
                             source={{ uri: item}}
                         />
-                    </ImageContainer>
+                    </ImageContainer> 
                 )}
+                onViewableItemsChanged={currentSlideImg.current}
             />
         </Container>
     );
