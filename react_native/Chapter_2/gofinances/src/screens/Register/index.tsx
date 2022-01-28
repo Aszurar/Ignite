@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import uuid from 'react-native-uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { 
     Alert, 
     Keyboard, 
@@ -22,9 +23,21 @@ import {
     Title, 
     TypeTransactionContainer 
 } from './styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+// import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
+
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+
+type RootBottomTabParamList = {
+    Listagem: undefined;
+}
+
+type RegisterScreenNavigationProp = BottomTabNavigationProp<RootBottomTabParamList, 'Listagem'>;
+
+type RegisterProps = {
+    navigation: RegisterScreenNavigationProp;
+    route: RegisterScreenNavigationProp;
+}
 
 interface FormData {
     name: string;
@@ -41,7 +54,7 @@ const schema = Yup.object().shape({
         .required('O valor da transação é obrigatório')
 });
 
-export function Register(){
+export function Register({ navigation, route }: RegisterProps) {
     const [transactionType, settransactionType] = useState(''); 
     const [categoryModal, setCategoryModal] = useState(false);
     const [category, setCategory] = useState({
@@ -56,8 +69,16 @@ export function Register(){
     } = useForm({
         resolver: yupResolver(schema)
     });
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
     const { user } = useAuth();
+    // function handleNavigationToListagem(){
+    //     navigation.dispatch(
+    //         CommonActions.navigate({
+    //             name: 'Listagem',
+    //         })
+    //     );
+    // }
+
     function handleSelectTransactionType(type: 'up' | 'down') {
         settransactionType(type);
     }
@@ -107,6 +128,9 @@ export function Register(){
             
             Alert.alert("Dados salvos com sucesso!");
             navigation.navigate('Listagem');
+            // handleNavigationToListagem();
+            console.log('deu certo: ', route);
+            
         } catch (error) {
             Alert.alert("Não foi possível salvar");
         }

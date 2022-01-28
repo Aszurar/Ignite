@@ -8,14 +8,7 @@ import { Dashboard } from '../screens/Dashboard';
 import { Register } from '../screens/Register';
 import { Resume } from '../screens/Resume';
 
-
-type RootTabParamList  = {
-    Listagem: undefined;
-    Cadastrar: undefined;
-    Resumo: undefined;
-  };
-
-const RootTab =  createBottomTabNavigator<RootTabParamList>();
+const RootTab =  createBottomTabNavigator();
 
 export function AppRoutes() {
     const theme = useTheme();
