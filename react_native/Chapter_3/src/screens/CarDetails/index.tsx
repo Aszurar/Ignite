@@ -30,6 +30,7 @@ import { CarDTO } from '../../dtos/CarDTO';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import { Accessory } from '../../components/Accessory';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export interface Params {
     car: CarDTO;
@@ -101,7 +102,7 @@ export function CarDetails(){
                 contentContainerStyle={{
                     paddingHorizontal: RFValue(24),
                     alignItems: 'center',
-                    
+                    paddingTop: getStatusBarHeight() + 160, 
                 }}
                 showsVerticalScrollIndicator={false}
                 onScroll={handleScrollY}
