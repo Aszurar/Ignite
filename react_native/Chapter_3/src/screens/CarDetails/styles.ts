@@ -22,23 +22,13 @@ export const SliderContainer = styled.View`
     margin-top: ${RFValue(32) + getStatusBarHeight()}px;
 `;
 
-
-export const Content = styled.ScrollView.attrs({
-    contentContainerStyle: {
-        paddingHorizontal: RFValue(24),
-        alignItems: 'center',
-    },
-    showsVerticalScrollIndicator: false
-})`
-    margin-top: ${RFValue(35.65)}px;
-`;
-
 export const Details = styled.View`
     width: 100%;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
+    margin-top: ${RFValue(38)}px;
 `;
 
 export const Description = styled.View``;
