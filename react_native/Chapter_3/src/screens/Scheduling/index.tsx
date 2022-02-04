@@ -60,12 +60,6 @@ export function Scheduling(){
         const firstDate = Object.keys(interval)[0];
         const endDate = Object.keys(interval)[Object.keys(interval).length - 1];
 
-        console.log('PROF - Inicio: ', format(getPlatformDate(new Date(firstDate)), 'dd/MM/yyyy'))
-        console.log('Eu - Incio: ', format(getPlatformDate(new Date(start.timestamp)), 'dd/MM/yyyy'))
-        console.log("////////////////////////////")
-        console.log('PROF - Fim: ', format(getPlatformDate(new Date(endDate)), 'dd/MM/yyyy'))
-        console.log('Eu - Fim: ', format(getPlatformDate(new Date(end.timestamp)), 'dd/MM/yyyy'))
-
         setRentalPeriod({
             startFormatted: format(getPlatformDate(new Date(firstDate)), 'dd/MM/yyyy'),
             endFormatted: format(getPlatformDate(new Date(endDate)), 'dd/MM/yyyy')

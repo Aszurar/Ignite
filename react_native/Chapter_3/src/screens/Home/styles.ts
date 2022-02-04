@@ -46,8 +46,3 @@ export const CarList = styled(
         padding: RFValue(16),
     }
 })``;
-
-export const MyCarsButton = styled(RectButton)`
-
-
-    `;

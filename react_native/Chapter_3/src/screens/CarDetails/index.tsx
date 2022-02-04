@@ -31,13 +31,15 @@ import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import { Accessory } from '../../components/Accessory';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { useTheme } from 'styled-components/native';
 
 export interface Params {
     car: CarDTO;
 }
 export function CarDetails(){
     const navigation = useNavigation<any>();
-    
+    const theme = useTheme();
+
     const { params } = useRoute();
     const { car } = params as Params;
     
@@ -83,7 +85,8 @@ export function CarDetails(){
                 translucent
             />
             <Animated.View
-                style={[handleStyleHeaderAnimation, styles.header]}
+                style={[handleStyleHeaderAnimation, styles.header, 
+                {backgroundColor: theme.colors.background_secondary}]}
             >
                 <Header>
                     <BackButton />
@@ -102,7 +105,7 @@ export function CarDetails(){
                 contentContainerStyle={{
                     paddingHorizontal: RFValue(24),
                     alignItems: 'center',
-                    paddingTop: getStatusBarHeight() + 160, 
+                    paddingTop: getStatusBarHeight() + RFValue(160), 
                 }}
                 showsVerticalScrollIndicator={false}
                 onScroll={handleScrollY}

@@ -22,6 +22,7 @@
     "expo-status-bar": "~1.0.4",
     "expo-updates": "~0.8.1",
     "json-server": "^0.17.0",
+    "lottie-react-native": "4.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "~0.63.4",

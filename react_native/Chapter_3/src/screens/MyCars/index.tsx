@@ -5,7 +5,6 @@ import { BackButton } from '../../components/BackButton';
 import { CarCards } from '../../components/CarCards';
 import { CarDTO } from '../../dtos/CarDTO';
 import { api } from '../../services/api';
-import { Load } from "../../components/Load";
 
 import {
     ArrowCard,
@@ -23,6 +22,7 @@ import {
     Subtitle, 
     Title
 } from './styles';
+import { CarLoadingAnimated } from '../../components/CarLoadingAnimated';
 
 export interface CarProps{
     user_id: number,
@@ -70,11 +70,12 @@ export function MyCars(){
 
             <InfoContainer>
                 <Subtitle>Agendamentos feitos</Subtitle>
-                <RentalTotal>{mycars.length}</RentalTotal>
+             
+             { !isLoading && <RentalTotal>{mycars.length}</RentalTotal> }
             </InfoContainer>
             
             { isLoading ? 
-                <Load />
+                <CarLoadingAnimated />
             :
                 <MyCarsList 
                     data={mycars}

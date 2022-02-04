@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StatusBar, StyleSheet } from "react-native";
+import { BackHandler, StatusBar, StyleSheet } from "react-native";
 import { CarCards } from "../../components/CarCards";
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,12 +9,10 @@ import {
     Header,
     HeaderContent,
     Logo,
-    // MyCarsButton,
     Total,
 } from "./styles";
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO";
-import { Load } from "../../components/Load";
 import { useTheme } from "styled-components/native";
 import Animated, 
 { 
@@ -25,6 +23,7 @@ import Animated,
 } from "react-native-reanimated";
 import { PanGestureHandler, RectButton } from "react-native-gesture-handler";
 import { RFValue } from "react-native-responsive-fontsize";
+import { CarLoadingAnimated } from "../../components/CarLoadingAnimated";
 
 
 const MyCarButtonAnimated = Animated.createAnimatedComponent(RectButton);
@@ -86,6 +85,10 @@ export function Home(){
         }
         fetchCars();
     }, []);
+
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', () => true);
+    }, []);
     
     useFocusEffect(() => {
         positionX.value = 0;
@@ -102,11 +105,12 @@ export function Home(){
                 <Header>
                     <HeaderContent>
                         <Logo />
-                        <Total>Total de {cars.length} carros</Total>
+
+                        {!isLoading && <Total>Total de {cars.length} carros</Total>}
                     </HeaderContent>
                 </Header>
             { isLoading ?
-                <Load />
+                <CarLoadingAnimated />
             : 
                 <CarList
                     data={cars}
