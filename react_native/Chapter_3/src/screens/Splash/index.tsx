@@ -40,6 +40,7 @@ export function Splash(){
                         [0, 25, 50],
                         [0, 50, 120],
                         Extrapolate.CLAMP),
+                    
                 },
             ]
         }

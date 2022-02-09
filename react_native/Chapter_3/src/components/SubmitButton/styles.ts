@@ -4,7 +4,11 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 interface ButtonProps {
     disabled?: boolean;
-    greenBackground: boolean;
+    color: string;
+}
+
+interface TitleProps {
+    light: boolean;
 }
 
 export const Container = styled(RectButton)<ButtonProps>`
@@ -12,12 +16,11 @@ export const Container = styled(RectButton)<ButtonProps>`
     height: ${RFValue(56)}px;
     align-items: center;
     justify-content: center;
-    background-color: 
-    ${({theme, greenBackground}) => greenBackground ? theme.colors.sucess : theme.colors.main};
-`;
+    background-color: ${({color}) => color};
+1`;
 
-export const Title = styled.Text`
+export const Title = styled.Text<TitleProps>`
     font-size: ${RFValue(15)}px;
     font-family: ${({theme}) => theme.fonts.primary_500};
-    color: ${({theme}) => theme.colors.background_secondary};
+    color: ${({theme, light}) => light ? theme.colors.title : theme.colors.background_secondary};
 `;

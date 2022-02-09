@@ -8,15 +8,17 @@ import {
 } from './styles';
 
 interface SubmitButtonProps extends RectButtonProps{
-    greenBackground: boolean;
-    text: string;
+    color?: string;
     enabled?: boolean;
+    light?: boolean;
     loading?: boolean;
+    text: string;
 }
 export function SubmitButton({
-    greenBackground, 
+    color, 
     text, 
-    enabled = true, 
+    enabled = true,
+    light = false, 
     loading = false, 
     ...rest 
 }: SubmitButtonProps){
@@ -24,7 +26,7 @@ export function SubmitButton({
     return (
         <Container
             {...rest}
-            greenBackground={greenBackground}
+            color={color ? color : theme.colors.main}
             enabled={enabled}
             style={{opacity: (enabled === false || loading === true) ? 0.5 :1}}         
         >
@@ -32,7 +34,7 @@ export function SubmitButton({
                 loading ?
                     <ActivityIndicator color={theme.colors.shape} size={24} />
                 :
-                    <Title>{text}</Title>
+                    <Title light={light}>{text}</Title>
             }
         </Container>
     );
