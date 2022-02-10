@@ -85,7 +85,6 @@ export function SignIn(){
                     />
             </Footer>
 
-
         </Container>
     </KeyboardAvoidingView>
     );
