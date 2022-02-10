@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { TextInput } from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
@@ -8,7 +9,7 @@ export const Container = styled.View`
 
     flex-direction: row;
 `;
-
+ 
 export const IconContainer = styled.View`
     padding: ${RFValue(16)}px;
     margin-right: ${RFValue(2)}px;
@@ -30,4 +31,13 @@ export const InputText = styled(TextInput)`
     line-height: ${RFValue(18.15)}px;
 
     color: ${({ theme }) => theme.colors.title};
+`;
+
+export const ChangePassowrdVisibilityButton = styled(BorderlessButton)`
+    padding: 0 ${RFValue(16)}px;
+
+    align-items: center;
+    justify-content: center;
+
+    background-color: ${({ theme }) => theme.colors.background_secondary};
 `;

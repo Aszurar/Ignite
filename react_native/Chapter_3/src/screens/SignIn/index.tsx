@@ -1,13 +1,13 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
+import { KeyboardAvoidingView, StatusBar, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components/native';
 import { Input } from '../../components/Input';
+import { PasswordInput } from '../../components/PasswordInput';
 import { SubmitButton } from '../../components/SubmitButton';
 
 import {
     Container, 
-    Content,
     Description, 
     Footer, 
     Form, 
@@ -19,6 +19,11 @@ export function SignIn(){
     const theme = useTheme();
 
     return (
+    <KeyboardAvoidingView 
+        behavior="position"
+        enabled
+    >
+
         <Container>
             <StatusBar 
                 barStyle="dark-content" 
@@ -26,61 +31,62 @@ export function SignIn(){
                 translucent
             />
             
-            <Content>
-                <Header>
-                    <Title>
-                        Estamos{'\n'}
-                        quase lá.
-                    </Title>
-                    <Description>
-                        Faça seu login para começar{'\n'}
-                        uma experiência incrível.
-                    </Description>
-                </Header>
+            
+            <Header>
+                <Title>
+                    Estamos{'\n'}
+                    quase lá.
+                </Title>
+                <Description>
+                    Faça seu login para começar{'\n'}
+                    uma experiência incrível.
+                </Description>
+            </Header>
 
-                <Form>
-                    <Input
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        autoFocus
-                        iconName='mail'
-                        keyboardType="email-address"
-                        placeholder="E-mail"
+            <Form>
+                <Input
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    autoFocus
+                    iconName='mail'
+                    keyboardType="email-address"
+                    placeholder="E-mail"
                     />
-                    <View
-                        style={{height: RFValue(8)}}
+                <View
+                    style={{height: RFValue(8)}}
                     />
-                    <Input
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        iconName='lock'
-                        secureTextEntry
-                        placeholder="Senha"
-                    />
-                </Form>
 
-                <Footer>
-                    <SubmitButton 
-                        text="Login"
-                        onPress={() => {}}
-                        enabled={false}
-                        loading={false}
+                <PasswordInput 
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    autoFocus
+                    iconName='lock'
+                    placeholder="Senha"
                     />
-                    <View
-                        style={{height: RFValue(8)}}
+            </Form>
+
+            <Footer>
+                <SubmitButton 
+                    text="Login"
+                    onPress={() => {}}
+                    enabled={false}
+                    loading={false}
                     />
-                    <SubmitButton 
-                        text="Crie conta gratuita"
-                        onPress={() => {}}
-                        color={theme.colors.background_secondary}
-                        enabled={false}
-                        light={true}
-                        loading={false}
+                <View
+                    style={{height: RFValue(8)}}
                     />
-                </Footer>
-            </Content>
+                <SubmitButton 
+                    text="Crie conta gratuita"
+                    onPress={() => {}}
+                    color={theme.colors.background_secondary}
+                    enabled={false}
+                    light={true}
+                    loading={false}
+                    />
+            </Footer>
 
 
         </Container>
+    </KeyboardAvoidingView>
     );
 }

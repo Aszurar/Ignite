@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Feather } from '@expo/vector-icons';
 
 import {
+    ChangePassowrdVisibilityButton,
     Container, 
     IconContainer, 
     InputText,
@@ -11,16 +12,21 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { TextInputProps } from 'react-native';
 import { useTheme } from 'styled-components';
 
-interface InputProps extends TextInputProps {
+interface PasswordInputProps extends TextInputProps {
     iconName: React.ComponentProps<typeof Feather>['name'];
 }
 
-export function Input({
+export function PasswordInput({
     iconName,
     ...rest
-}: InputProps){
+}: PasswordInputProps){
     const theme = useTheme();
-    
+    const [toggleEye, setToggleEye] = useState(false);
+
+    function handleChangeEye() {
+        setToggleEye(!toggleEye);
+    }
+
     return (
         <Container>
 
@@ -32,9 +38,21 @@ export function Input({
                 />
             </IconContainer>
 
-            <InputText 
+            <InputText
+                secureTextEntry={toggleEye}
                 {...rest}
             />
+
+            <ChangePassowrdVisibilityButton
+                onPress={handleChangeEye}
+            >
+                <Feather
+                    name={toggleEye ? 'eye-off' : 'eye' }
+                    size={RFValue(24)}
+                    color={theme.colors.text}
+                />
+            </ChangePassowrdVisibilityButton>
+
         </Container>
     );
 }
