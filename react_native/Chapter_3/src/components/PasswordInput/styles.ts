@@ -1,7 +1,12 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { TextInput } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
+
+
+interface Props {
+    isFocus: boolean;
+}
 
 export const Container = styled.View`
     height: ${RFValue(56)}px;
@@ -10,7 +15,7 @@ export const Container = styled.View`
     flex-direction: row;
 `;
  
-export const IconContainer = styled.View`
+export const IconContainer = styled.View<Props>`
     padding: ${RFValue(16)}px;
     margin-right: ${RFValue(2)}px;
 
@@ -18,9 +23,17 @@ export const IconContainer = styled.View`
     align-items: center;
 
     background-color: ${({ theme }) => theme.colors.background_secondary};
+
+    border-bottom-width: ${RFValue(2)}px;
+    border-bottom-color: transparent;
+    
+    ${({isFocus, theme}) => isFocus && css`
+        border-bottom-width: ${RFValue(2)}px;
+        border-bottom-color: ${theme.colors.main};
+    `}
 `;
 
-export const InputText = styled(TextInput)`
+export const InputText = styled(TextInput)<Props>`
     flex: 1;
     background-color: ${({ theme }) => theme.colors.background_secondary};
 
@@ -31,6 +44,15 @@ export const InputText = styled(TextInput)`
     line-height: ${RFValue(18.15)}px;
 
     color: ${({ theme }) => theme.colors.title};
+    
+    
+    border-bottom-width: ${RFValue(2)}px;
+    border-bottom-color: transparent;
+    
+    ${({isFocus, theme}) => isFocus && css`
+        border-bottom-width: ${RFValue(2)}px;
+        border-bottom-color: ${theme.colors.main};
+    `}
 `;
 
 export const ChangePassowrdVisibilityButton = styled(BorderlessButton)`
@@ -41,3 +63,4 @@ export const ChangePassowrdVisibilityButton = styled(BorderlessButton)`
 
     background-color: ${({ theme }) => theme.colors.background_secondary};
 `;
+

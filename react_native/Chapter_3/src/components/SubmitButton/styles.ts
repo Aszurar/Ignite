@@ -3,7 +3,6 @@ import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface ButtonProps {
-    disabled?: boolean;
     color: string;
 }
 

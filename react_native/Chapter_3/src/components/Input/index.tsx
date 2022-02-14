@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
 import { Feather } from '@expo/vector-icons';
-
+import * as Yup from 'yup';
 import {
     Container, 
+    ErrorMessage, 
     IconContainer, 
     InputText,
 } from './styles';
@@ -13,11 +14,14 @@ import { useTheme } from 'styled-components';
 
 interface InputProps extends TextInputProps {
     iconName: React.ComponentProps<typeof Feather>['name'];
-    value: string;
+    error: string;
+    setErrorMessage: ({}: Yup.ValidationError) => void;
 }
 
 export function Input({
+    error,
     iconName,
+    setErrorMessage,
     value,
     ...rest
 }: InputProps){
@@ -28,6 +32,7 @@ export function Input({
 
     function handleInputFocused(){
         setIsFocused(true);
+        setErrorMessage({} as Yup.ValidationError);
     }
     
     function handleInputBlur(){
@@ -35,23 +40,28 @@ export function Input({
         setIsFilled(!!value);
     }
     return (
-        <Container
-            isFocus={isFocused}
-        >
+        <>
+            <Container>
 
-            <IconContainer>
-                <Feather
-                    name={iconName}
-                    size={RFValue(24)}
-                    color={ (isFocused || isFilled) ? theme.colors.main : theme.colors.text}
+                <IconContainer
+                    isFocus={isFocused}
+                >
+                    <Feather
+                        name={iconName}
+                        size={RFValue(24)}
+                        color={ (isFocused || isFilled) ? theme.colors.main : theme.colors.text}
+                    />
+                </IconContainer>
+
+                <InputText
+                    isFocus={isFocused}
+                    onFocus={handleInputFocused}
+                    onBlur={handleInputBlur} 
+                    {...rest}
                 />
-            </IconContainer>
-
-            <InputText
-                onFocus={handleInputFocused}
-                onBlur={handleInputBlur} 
-                {...rest}
-            />
-        </Container>
+            </Container>
+            
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+        </>
     );
 }

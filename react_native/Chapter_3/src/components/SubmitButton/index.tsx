@@ -9,7 +9,6 @@ import {
 
 interface SubmitButtonProps extends RectButtonProps{
     color?: string;
-    enabled?: boolean;
     light?: boolean;
     loading?: boolean;
     text: string;
@@ -28,7 +27,7 @@ export function SubmitButton({
             {...rest}
             color={color ? color : theme.colors.main}
             enabled={enabled}
-            style={{opacity: (enabled === false || loading === true) ? 0.5 :1}}         
+            style={{opacity: (enabled === false || loading === true) ? 0.5 : 1}}         
         >
             {
                 loading ?
