@@ -6,7 +6,6 @@ interface ImageIndexProps {
     active: boolean;
 }
 
-
 export const Container = styled.View`
     width: 100%;
 `;
