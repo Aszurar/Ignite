@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { 
     Alert,
     Keyboard,
-    KeyboardAvoidingView, 
+    Platform, 
+    ScrollView, 
     StatusBar, 
     TouchableWithoutFeedback, 
     View } 
@@ -22,13 +23,22 @@ import {
     Header, 
     Title
 } from './styles';
+import { useNavigation } from '@react-navigation/native';
+import { BackButton } from '../../components/BackButton';
 
 export function SignIn(){
     const theme = useTheme();
+    const navigation = useNavigation<any>();
+    
+    const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState({} as Yup.ValidationError);
+
+    function handleSignUp(){
+        navigation.navigate('SignUpFirstStep');
+    }
 
     async function handleSignIn(){
         const schema = Yup.object().shape({
@@ -55,82 +65,119 @@ export function SignIn(){
         }
 
     }
-    return (
-        <Container 
-            behavior="position"
-            style={{ flex: 1 }}
-            enabled
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {
+                setIsKeyboardVisible(true);
+            }
+        );
+
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+                setIsKeyboardVisible(false);
+            }
+        );
+
+        return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+          };
+
+    }, [Keyboard])
+    return ( 
+        <ScrollView
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator
         >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View>
-                    <StatusBar 
-                        barStyle="dark-content" 
-                        backgroundColor="transparent"
-                        translucent
-                    />
-                    
-                    
-                    <Header>
-                        <Title>
-                            Estamos{'\n'}
-                            quase lá.
-                        </Title>
-                        <Description>
-                            Faça seu login para começar{'\n'}
-                            uma experiência incrível.
-                        </Description>
-                    </Header>
+            <Container 
+                behavior='position'
+                style={{ flex: 1 }}
+                enabled
+                keyboardVerticalOffset={Platform.select({ios: 0, android: RFValue(-50)})}
+            >
+                <StatusBar 
+                    barStyle="dark-content" 
+                    backgroundColor={theme.colors.background_primary}
+                    translucent
+                />
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <View>
+                        <Header>
 
-                    <Form>
-                        <Input
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            autoFocus
-                            error={errorMessage.errors && errorMessage.message}
-                            setErrorMessage={setErrorMessage}
-                            iconName='mail'
-                            keyboardType="email-address"
-                            onChangeText={setEmail}
-                            placeholder="E-mail"
-                            value={email}
-                            />
-                        <View
-                            style={{height: RFValue(8)}}
-                            />
+                            { 
+                            (!isKeyboardVisible) ?
+                                <Title>
+                                    Estamos{'\n'}
+                                    quase lá.
+                                </Title>
+                                :
+                                <BackButton
+                                    style={{ marginBottom: RFValue(58) }}
+                                    onPress={Keyboard.dismiss}
+                                />
+                            }
+                            <Description>
+                                Faça seu login para começar{'\n'}
+                                uma experiência incrível.
+                            </Description>
+                        </Header>
 
-                        <PasswordInput 
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            autoFocus
-                            iconName='lock'
-                            onChangeText={setPassword}
-                            placeholder="Senha"
-                            value={password}
-                        />
-                    </Form>
+                
 
-                    <Footer>
-                        <SubmitButton 
-                            text="Login"
-                            onPress={handleSignIn}
-                            enabled={true}
-                            loading={false}
-                            />
-                        <View
-                            style={{height: RFValue(8)}}
-                            />
-                        <SubmitButton 
-                            text="Crie conta gratuita"
-                            onPress={() => {}}
-                            color={theme.colors.background_secondary}
-                            enabled={false}
-                            light={true}
-                            loading={false}
-                            />
-                    </Footer>
+                        <Form>
+                            <Input
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                autoFocus
+                                error={errorMessage.errors && errorMessage.message}
+                                setErrorMessage={setErrorMessage}
+                                iconName='mail'
+                                keyboardType="email-address"
+                                onChangeText={setEmail}
+                                placeholder="E-mail"
+                                value={email}
+                                />
+                            <View
+                                style={{height: RFValue(8)}}
+                                />
 
-                </View>
-            </TouchableWithoutFeedback>
-        </Container>
+                            <PasswordInput 
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                autoFocus
+                                iconName='lock'
+                                onChangeText={setPassword}
+                                placeholder="Senha"
+                                value={password}
+                            />
+                        </Form>
+
+                        <Footer>
+                            <SubmitButton 
+                                text="Login"
+                                onPress={handleSignIn}
+                                enabled={true}
+                                loading={false}
+                                />
+                            <View
+                                style={{height: RFValue(8)}}
+                                />
+                            <SubmitButton 
+                                text="Crie conta gratuita"
+                                onPress={handleSignUp}
+                                color={theme.colors.background_secondary}
+                                enabled={true}
+                                light={true}
+                                loading={false}
+                                />
+                        </Footer>
+
+                    </View>
+                </TouchableWithoutFeedback>
+            </Container>
+        </ScrollView>
     );
 }

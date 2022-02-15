@@ -145,7 +145,6 @@ export function CarDetails(){
 
             <Footer>
                 <SubmitButton 
-                    greenBackground={false}
                     text="Escolher período do aluguel"
                     onPress={handleScheduling}
                 />
