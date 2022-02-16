@@ -7,9 +7,14 @@ export const Container = styled.KeyboardAvoidingView`
     background-color: ${({theme}) => theme.colors.background_primary};
 `;
 
-export const Header = styled.View`
+interface HeaderProps {
+    isKeyboardVisible: boolean;
+}
+
+export const Header = styled.View<HeaderProps>`
     width: 100%;
-    margin-top: ${RFValue(115) + getStatusBarHeight()}px;
+    margin-top: ${({isKeyboardVisible}) => isKeyboardVisible ? 
+                    RFValue(20) + getStatusBarHeight() : RFValue(115) + getStatusBarHeight()}px;
     padding-left: ${RFValue(8)}px;
 `;
 
@@ -33,7 +38,7 @@ export const Description = styled.Text`
 
 export const Form = styled.View`
     width: 100%;
-    margin: ${RFValue(64)}px 0;
+    margin: ${RFValue(56)}px 0;
 `;
 
 export const Footer = styled.View`

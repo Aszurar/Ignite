@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { TextInput } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 
@@ -55,7 +55,7 @@ export const InputText = styled(TextInput)<Props>`
     `}
 `;
 
-export const ChangePassowrdVisibilityButton = styled(BorderlessButton)`
+export const ChangePassowrdVisibilityButton = styled(RectButton)`
     padding: 0 ${RFValue(16)}px;
 
     align-items: center;

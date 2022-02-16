@@ -91,12 +91,14 @@ export function SignIn(){
         <ScrollView
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator
+            contentContainerStyle={{
+                flexGrow: 1,
+            }}
         >
             <Container 
-                behavior='position'
+                behavior={Platform.OS === 'ios' ? 'position' : undefined}
                 style={{ flex: 1 }}
                 enabled
-                keyboardVerticalOffset={Platform.select({ios: 0, android: RFValue(-50)})}
             >
                 <StatusBar 
                     barStyle="dark-content" 
@@ -104,20 +106,22 @@ export function SignIn(){
                     translucent
                 />
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                        <View>
-                        <Header>
+                    <View>
+                        <Header
+                            isKeyboardVisible={isKeyboardVisible}
+                        >
 
                             { 
-                            (!isKeyboardVisible) ?
-                                <Title>
-                                    Estamos{'\n'}
-                                    quase lá.
-                                </Title>
-                                :
-                                <BackButton
-                                    style={{ marginBottom: RFValue(58) }}
-                                    onPress={Keyboard.dismiss}
-                                />
+                                (!isKeyboardVisible) ?
+                                    <Title>
+                                        Estamos{'\n'}
+                                        quase lá.
+                                    </Title>
+                                    :
+                                    <BackButton
+                                        style={{ marginBottom: RFValue(40) }}
+                                        onPress={Keyboard.dismiss}
+                                    />
                             }
                             <Description>
                                 Faça seu login para começar{'\n'}
@@ -125,7 +129,6 @@ export function SignIn(){
                             </Description>
                         </Header>
 
-                
 
                         <Form>
                             <Input

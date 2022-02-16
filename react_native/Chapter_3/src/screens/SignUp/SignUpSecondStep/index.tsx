@@ -1,10 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
+import { 
+    Keyboard, 
+    Platform, 
+    ScrollView, 
+    TouchableWithoutFeedback, 
+    View 
+} from 'react-native';
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import { Input } from '../../../components/Input';
+import { PasswordInput } from '../../../components/PasswordInput';
 import { SubmitButton } from '../../../components/SubmitButton';
 
 import {
@@ -20,17 +26,13 @@ import {
     Title
 } from './styles';
 
-export function SignUpFirstStep(){
+export function SignUpSecondStep(){
 
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
     const { navigate } = useNavigation<any>();
 
-    function handleSecondStep() {
-        navigate('SignUpSecondStep')
-    }
 
     useEffect(() => {   
-        
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidShow', () => {
             setIsKeyboardVisible(true);
         });
@@ -64,8 +66,8 @@ export function SignUpFirstStep(){
                             <NavBarContainer>
                                 <BackButton />
                                 <Steps>
-                                    <Bullet active/>
                                     <Bullet />
+                                    <Bullet active/>
                                 </Steps>
                             </NavBarContainer>
                             {
@@ -82,47 +84,36 @@ export function SignUpFirstStep(){
                         
                         </Header>
                         <Form>
-                            <Subtitle>1. Dados</Subtitle>
+                            <Subtitle>2. Senha</Subtitle>
                             
-                            <Input 
-                                iconName='user'
-                                autoCapitalize='words'
-                                autoCorrect
-                                error={''}
-                                placeholder='Nome'
-                                returnKeyType='next'
-                                setErrorMessage={() => {}}
-                                />
-                            
-                            <InputDivisor/>
-
-                            <Input
-                                iconName='mail'
+                            <PasswordInput 
                                 autoCapitalize='none'
                                 autoCorrect={false}
-                                keyboardType='email-address'
-                                placeholder='E-mail'
-                                returnKeyType='next'
-                                setErrorMessage={() => {}}
-                                error={''}
+                                autoFocus
+                                iconName='lock'
+                                // onChangeText={setPassword}
+                                placeholder="Senha"
+                                // value={password}
                             />
-
-                            <InputDivisor/>
                             
-                            <Input
-                                iconName='credit-card'
-                                keyboardType='numeric'
-                                placeholder='CNH'
-                                setErrorMessage={() => {}}
-                                error={''}
+                            <InputDivisor/>
+
+                            <PasswordInput 
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                autoFocus
+                                iconName='lock'
+                                // onChangeText={setPassword}
+                                placeholder="Repetir senha"
+                                // value={password}
                             />
                         </Form>
             
                         <Footer>
                             <SubmitButton
                                 text="Próximo"
-                                onPress={handleSecondStep}
-                                enabled={true}
+                                onPress={() => {}}
+                                enabled={false}
                                 loading={false}
                             />
                         </Footer>
