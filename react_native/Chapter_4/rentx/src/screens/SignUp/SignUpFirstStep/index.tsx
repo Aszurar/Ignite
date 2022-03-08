@@ -35,12 +35,11 @@ export function SignUpFirstStep() {
     name: Yup.string().required('Nome é obrigatório'),
   });
 
-  async function handleSignUo() {
+  async function handleSignUpSecondStep() {
     const data = { name, email, cnh };
 
     try {
       await schema.validate(data);
-      Alert.alert('Sucesso ✅', 'Cadastro realizado com sucesso');
       navigate('SignUpSecondStep', { user: data });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
@@ -126,7 +125,7 @@ export function SignUpFirstStep() {
             </Form>
 
             <Footer>
-              <SubmitButton text="Próximo" onPress={handleSignUo} enabled={true} loading={false} />
+              <SubmitButton text="Próximo" onPress={handleSignUpSecondStep} enabled={true} loading={false} />
             </Footer>
           </View>
         </TouchableWithoutFeedback>

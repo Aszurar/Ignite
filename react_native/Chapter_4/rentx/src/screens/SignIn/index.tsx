@@ -10,11 +10,12 @@ import { SubmitButton } from '../../components/SubmitButton';
 import { Container, Description, Footer, Form, Header, Title } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { BackButton } from '../../components/BackButton';
+import { useAuth } from '../../hooks/auth';
 
 export function SignIn() {
   const theme = useTheme();
   const { navigate } = useNavigation<any>();
-
+  const { signIn } = useAuth();
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const [email, setEmail] = useState('');
@@ -32,6 +33,7 @@ export function SignIn() {
 
     try {
       await schema.validate({ email, password });
+      signIn({ email, password });
       Alert.alert('Sucesso ✅', 'Login realizado com sucesso');
       navigate('Home');
     } catch (error) {

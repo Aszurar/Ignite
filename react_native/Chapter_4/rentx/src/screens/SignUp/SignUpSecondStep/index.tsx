@@ -1,11 +1,14 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Alert, Keyboard, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { useTheme } from 'styled-components/native';
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import { Input } from '../../../components/Input';
 import { PasswordInput } from '../../../components/PasswordInput';
 import { SubmitButton } from '../../../components/SubmitButton';
+import { api } from '../../../services/api';
+import theme from '../../../styles/theme';
 
 import {
   Container,
@@ -30,6 +33,7 @@ interface data {
 
 export function SignUpSecondStep() {
   const route = useRoute();
+  const theme = useTheme();
   const { user } = route.params as data;
   const { navigate } = useNavigation<any>();
 
@@ -38,7 +42,7 @@ export function SignUpSecondStep() {
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
-  function handleSignUp() {
+  async function handleSignUp() {
     if (!password || !passwordConfirm) {
       Alert.alert('Atenção❗', 'Preencha todos os campos');
     }
@@ -47,11 +51,23 @@ export function SignUpSecondStep() {
       Alert.alert('Erro ❌', 'As senhas não são iguais');
     }
 
-    navigate('Confirmation', {
-      title: 'Conta Criada!',
-      subtitle: `Agora é só você fazer login\n e aproveitar`,
-      nextScreenRoute: 'SignIn',
-    });
+    try {
+      await api.post('/users', {
+        name: user.name,
+        email: user.email,
+        driver_license: user.cnh,
+        password,
+      });
+
+      navigate('Confirmation', {
+        title: 'Conta Criada!',
+        subtitle: `Agora é só você fazer login\n e aproveitar`,
+        nextScreenRoute: 'SignIn',
+      });
+    } catch (error) {
+      Alert.alert('Erro ❌ \nOcorreu um erro ao tentar realizar o cadastro');
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -125,7 +141,13 @@ export function SignUpSecondStep() {
             </Form>
 
             <Footer>
-              <SubmitButton text="Próximo" onPress={handleSignUp} enabled={true} loading={false} />
+              <SubmitButton
+                color={theme.colors.sucess}
+                text="Cadastrar"
+                onPress={handleSignUp}
+                enabled={true}
+                loading={false}
+              />
             </Footer>
           </View>
         </TouchableWithoutFeedback>
