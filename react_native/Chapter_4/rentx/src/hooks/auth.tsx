@@ -47,7 +47,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     const { token, user } = response.data;
 
-    api.defaults.headers.authorization = `Bearer ${token}`;
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     console.log(token);
     console.log(user);
@@ -56,8 +56,6 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signOut() {}
-
-  async function singOut() {}
 
   return (
     <AuthContext.Provider value={{ user: data.user, token: data.token, signIn, signOut }}>
