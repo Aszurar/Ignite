@@ -6,5 +6,5 @@ import { AppTabRoutes } from './app.tab.routes';
 
 export function Routes() {
   const { user } = useAuth();
-  return <NavigationContainer>{user ? <AppTabRoutes /> : <AuthRoutes />}</NavigationContainer>;
+  return <NavigationContainer>{user.id ? <AppTabRoutes /> : <AuthRoutes />}</NavigationContainer>;
 }
