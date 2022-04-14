@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Alert, Keyboard, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
-import { Input } from '../../../components/Input';
+import Input from '../../../components/Input';
 import { SubmitButton } from '../../../components/SubmitButton';
 
 import {

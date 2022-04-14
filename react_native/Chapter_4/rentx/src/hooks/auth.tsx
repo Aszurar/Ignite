@@ -35,7 +35,6 @@ const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 function AuthProvider({ children }: AuthProviderProps) {
   const [data, setData] = useState<userProps>({} as userProps);
   const [userStorageLoading, setUserStorageLoading] = useState(true);
-  const userStorageKey = '@rentx:user';
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
@@ -45,6 +44,8 @@ function AuthProvider({ children }: AuthProviderProps) {
       });
 
       const { token, user } = response.data;
+      console.log('=========== dados vindo da api back-end ============');
+      console.log('user', response.data);
 
       const userCollection = database.get<ModalUser>('users');
       await database.write(async () => {
@@ -60,18 +61,25 @@ function AuthProvider({ children }: AuthProviderProps) {
 
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-      console.log('==============');
-
-      console.log(token);
-      console.log(user);
-
       setData({ ...user, token });
     } catch (error: any) {
       throw new Error(error);
     }
   }
 
-  async function signOut() {}
+  async function signOut() {
+    try {
+      const userCollection = database.get<ModalUser>('users');
+      await database.write(async () => {
+        const userSelected = await userCollection.find(data.id);
+        await userSelected.destroyPermanently();
+      });
+
+      setData({} as userProps);
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
 
   useEffect(() => {
     async function loadData() {

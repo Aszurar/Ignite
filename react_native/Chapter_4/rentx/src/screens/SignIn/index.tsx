@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
-import { Alert, Keyboard, Platform, ScrollView, StatusBar, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  Alert,
+  Keyboard,
+  Platform,
+  ScrollView,
+  StatusBar,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components/native';
-import { Input } from '../../components/Input';
-import { PasswordInput } from '../../components/PasswordInput';
+import Input from '../../components/Input';
+import PasswordInput from '../../components/PasswordInput';
 import { SubmitButton } from '../../components/SubmitButton';
 
 import { Container, Description, Footer, Form, Header, Title } from './styles';
@@ -18,8 +27,10 @@ export function SignIn() {
   const { signIn } = useAuth();
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('jorgeoreidafloresta@gmail.com');
+  const [password, setPassword] = useState('123456');
+
+  const passowrdRef = useRef<TextInput>(null);
 
   function handleSignUp() {
     navigate('SignUpFirstStep');
@@ -34,7 +45,6 @@ export function SignIn() {
     try {
       await schema.validate({ email, password });
       await signIn({ email, password });
-      Alert.alert('Sucesso ✅', 'Login realizado com sucesso');
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert('Opa 🚫', error.message);
@@ -44,86 +54,88 @@ export function SignIn() {
     }
   }
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setIsKeyboardVisible(true);
-    });
+  // useEffect(() => {
+  //   const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+  //     setIsKeyboardVisible(true);
+  //   });
 
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setIsKeyboardVisible(false);
-    });
+  //   return () => {
+  //     keyboardDidShowListener.remove();
+  //   };
+  // }, [Keyboard]);
 
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, [Keyboard]);
+  function keyboardDosentVisible() {
+    setIsKeyboardVisible(false);
+    Keyboard.dismiss();
+  }
+
+  function incompleteFieldsAlert() {
+    Alert.alert('Opa 🚫', 'Preencha todos os campos!');
+    keyboardDosentVisible;
+  }
   return (
-    <ScrollView
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator
-      contentContainerStyle={{
-        flexGrow: 1,
-      }}
-    >
-      <Container behavior={Platform.OS === 'ios' ? 'position' : undefined} style={{ flex: 1 }} enabled>
-        <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background_primary} translucent />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View>
-            <Header isKeyboardVisible={isKeyboardVisible}>
-              {!isKeyboardVisible ? (
-                <Title>
-                  Estamos{'\n'}
-                  quase lá.
-                </Title>
-              ) : (
-                <BackButton style={{ marginBottom: RFValue(40) }} onPress={Keyboard.dismiss} />
-              )}
-              <Description>
-                Faça seu login para começar{'\n'}
-                uma experiência incrível.
-              </Description>
-            </Header>
+    <Container behavior="position" enabled>
+      <TouchableWithoutFeedback onPress={keyboardDosentVisible}>
+        <View>
+          <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background_primary} translucent />
+          <Header isKeyboardVisible={isKeyboardVisible}>
+            {!isKeyboardVisible ? (
+              <Title>
+                Estamos{'\n'}
+                quase lá.
+              </Title>
+            ) : (
+              <BackButton style={{ marginBottom: RFValue(40) }} onPress={Keyboard.dismiss} />
+            )}
+            <Description>
+              Faça seu login para começar{'\n'}
+              uma experiência incrível.
+            </Description>
+          </Header>
 
-            <Form>
-              <Input
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoFocus
-                iconName="mail"
-                keyboardType="email-address"
-                onChangeText={setEmail}
-                placeholder="E-mail"
-                value={email}
-              />
-              <View style={{ height: RFValue(8) }} />
+          <Form>
+            <Input
+              autoCapitalize="none"
+              autoCorrect={false}
+              defaultValue={email}
+              iconName="mail"
+              keyboardType="email-address"
+              onChangeText={setEmail}
+              onSubmitEditing={() => passowrdRef.current?.focus()}
+              placeholder="E-mail"
+              value={email}
+              returnKeyType="next"
+            />
+            <View style={{ height: RFValue(8) }} />
 
-              <PasswordInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoFocus
-                iconName="lock"
-                onChangeText={setPassword}
-                placeholder="Senha"
-                value={password}
-              />
-            </Form>
+            <PasswordInput
+              ref={passowrdRef}
+              autoCapitalize="none"
+              autoCorrect={false}
+              defaultValue={password}
+              iconName="lock"
+              onChangeText={setPassword}
+              onSubmitEditing={!!email && !!password ? handleSignIn : incompleteFieldsAlert}
+              placeholder="Senha"
+              value={password}
+              returnKeyType="send"
+            />
+          </Form>
 
-            <Footer>
-              <SubmitButton text="Login" onPress={handleSignIn} enabled={true} loading={false} />
-              <View style={{ height: RFValue(8) }} />
-              <SubmitButton
-                text="Crie conta gratuita"
-                onPress={handleSignUp}
-                color={theme.colors.background_secondary}
-                enabled={true}
-                light={true}
-                loading={false}
-              />
-            </Footer>
-          </View>
-        </TouchableWithoutFeedback>
-      </Container>
-    </ScrollView>
+          <Footer>
+            <SubmitButton text="Login" onPress={handleSignIn} enabled={!!email && !!password} loading={false} />
+            <View style={{ height: RFValue(8) }} />
+            <SubmitButton
+              text="Crie conta gratuita"
+              onPress={handleSignUp}
+              color={theme.colors.background_secondary}
+              enabled={!!email && !!password}
+              light={true}
+              loading={false}
+            />
+          </Footer>
+        </View>
+      </TouchableWithoutFeedback>
+    </Container>
   );
 }

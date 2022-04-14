@@ -4,8 +4,8 @@ import { Alert, Keyboard, Platform, ScrollView, TouchableWithoutFeedback, View }
 import { useTheme } from 'styled-components/native';
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
-import { Input } from '../../../components/Input';
-import { PasswordInput } from '../../../components/PasswordInput';
+import Input from '../../../components/Input';
+import PasswordInput from '../../../components/PasswordInput';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { api } from '../../../services/api';
 import theme from '../../../styles/theme';

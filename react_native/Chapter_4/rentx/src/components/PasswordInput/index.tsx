@@ -1,22 +1,31 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 import { Feather } from '@expo/vector-icons';
 
 import { ChangePassowrdVisibilityButton, Container, IconContainer, InputText } from './styles';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { TextInputProps } from 'react-native';
+import { TextInput, TextInputProps } from 'react-native';
 import { useTheme } from 'styled-components';
 
 interface PasswordInputProps extends TextInputProps {
   iconName: React.ComponentProps<typeof Feather>['name'];
 }
 
-export function PasswordInput({ iconName, value, ...rest }: PasswordInputProps) {
+interface InputRef {
+  focus(): void;
+}
+
+const PasswordInput: React.ForwardRefRenderFunction<InputRef, PasswordInputProps> = (
+  { iconName, value, ...rest },
+  ref
+) => {
   const theme = useTheme();
   const [toggleEye, setToggleEye] = useState(true);
 
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
+
+  const inputElementRef = useRef<TextInput>(null);
 
   function handleInputFocused() {
     setIsFocused(true);
@@ -31,6 +40,12 @@ export function PasswordInput({ iconName, value, ...rest }: PasswordInputProps) 
     setToggleEye(!toggleEye);
   }
 
+  useImperativeHandle(ref, () => ({
+    focus() {
+      inputElementRef.current?.focus();
+    },
+  }));
+
   return (
     <Container>
       <IconContainer isFocus={isFocused}>
@@ -42,6 +57,8 @@ export function PasswordInput({ iconName, value, ...rest }: PasswordInputProps) 
       </IconContainer>
 
       <InputText
+        ref={inputElementRef}
+        autoCorrect={false}
         secureTextEntry={toggleEye}
         onFocus={handleInputFocused}
         onBlur={handleInputBlur}
@@ -54,4 +71,6 @@ export function PasswordInput({ iconName, value, ...rest }: PasswordInputProps) 
       </ChangePassowrdVisibilityButton>
     </Container>
   );
-}
+};
+
+export default forwardRef(PasswordInput);

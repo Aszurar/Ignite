@@ -1,10 +1,9 @@
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
-  flex: 1;
   background-color: ${({ theme }) => theme.colors.background_primary};
 `;
 
@@ -39,7 +38,7 @@ export const ProfilePhotoContainer = styled.View`
   height: ${RFValue(180)}px;
   border-radius: ${RFValue(90)}px;
 
-  margin-top: ${RFValue(50)}px;
+  margin-top: ${RFValue(40)}px;
 
   background-color: ${({ theme }) => theme.colors.shape};
 `;
@@ -52,7 +51,7 @@ export const ProfilePhoto = styled.Image.attrs({
   border-radius: ${RFValue(90)}px;
 `;
 
-export const UpdateProfilePhotoButton = styled(BorderlessButton)`
+export const UpdateProfilePhotoButton = styled(RectButton)`
   background-color: ${({ theme }) => theme.colors.main};
   position: absolute;
   bottom: ${RFValue(10)}px;
@@ -63,30 +62,58 @@ export const UpdateProfilePhotoButton = styled(BorderlessButton)`
   justify-content: center;
 `;
 
+export const Content = styled.View`
+  margin-top: ${RFValue(60)}px;
+  padding: 0 ${RFValue(24)}px;
+`;
+
 export const Sessions = styled.View`
-  margin-top: ${RFValue(62)}px;
   width: 100%;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
 
-  margin-bottom: ${RFValue(10)}px;
+  margin-bottom: ${RFValue(24)}px;
 `;
 
-export const SessionsButton = styled(RectButton)``;
+interface SessionButtonProps {
+  active: boolean;
+}
 
-export const SessionsButtonText = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.secondary_600};
-  color: ${({ theme }) => theme.colors.title_light};
+export const SessionsButton = styled.TouchableOpacity<SessionButtonProps>`
+  padding-bottom: ${RFValue(14)}px;
+
+  ${({ active }) =>
+    active
+      ? css`
+          border-bottom-width: ${RFValue(2)}px;
+          border-bottom-color: ${({ theme }) => theme.colors.main};
+        `
+      : css`
+          border-bottom-width: ${RFValue(2)}px;
+          border-bottom-color: ${({ theme }) => theme.colors.background_primary};
+        `};
+`;
+
+export const SessionsButtonText = styled.Text<SessionButtonProps>`
   font-size: ${RFValue(20)}px;
   line-height: ${RFValue(21.76)}px;
+
+  ${({ active }) =>
+    active
+      ? css`
+          color: ${({ theme }) => theme.colors.title_light};
+          font-family: ${({ theme }) => theme.fonts.secondary_600};
+        `
+      : css`
+          color: ${({ theme }) => theme.colors.text_detail};
+          font-family: ${({ theme }) => theme.fonts.secondary_400};
+        `};
 `;
 
-export const SessionsButtonBorder = styled.View`
-  width: 100%;
-  height: ${RFValue(2)}px;
-
-  margin-top: ${RFValue(14)}px;
-  background-color: ${({ theme }) => theme.colors.main};
+export const DataForm = styled.View`
+  margin-bottom: ${RFValue(16)}px;
 `;
 
-export const DataForm = styled.View``;
+export const DataFormSpace = styled.View`
+  height: ${RFValue(8)}px;
+`;
