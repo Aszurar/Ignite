@@ -26,6 +26,7 @@ export function SignIn() {
   const { navigate } = useNavigation<any>();
   const { signIn } = useAuth();
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [email, setEmail] = useState('jorgeoreidafloresta@gmail.com');
   const [password, setPassword] = useState('123456');
@@ -37,6 +38,7 @@ export function SignIn() {
   }
 
   async function handleSignIn() {
+    setIsLoading(true);
     const schema = Yup.object().shape({
       password: Yup.string().required('Senha é obrigatória'),
       email: Yup.string().email('Digite um email válido').required('E-mail é obrigatório.'),
@@ -46,6 +48,7 @@ export function SignIn() {
       await schema.validate({ email, password });
       await signIn({ email, password });
     } catch (error) {
+      setIsLoading(false);
       if (error instanceof Yup.ValidationError) {
         Alert.alert('Opa 🚫', error.message);
       } else {
@@ -53,17 +56,6 @@ export function SignIn() {
       }
     }
   }
-
-  // useEffect(() => {
-  //   const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-  //     setIsKeyboardVisible(true);
-  //   });
-
-  //   return () => {
-  //     keyboardDidShowListener.remove();
-  //   };
-  // }, [Keyboard]);
-
   function keyboardDosentVisible() {
     setIsKeyboardVisible(false);
     Keyboard.dismiss();
@@ -78,15 +70,12 @@ export function SignIn() {
       <TouchableWithoutFeedback onPress={keyboardDosentVisible}>
         <View>
           <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background_primary} translucent />
-          <Header isKeyboardVisible={isKeyboardVisible}>
-            {!isKeyboardVisible ? (
-              <Title>
-                Estamos{'\n'}
-                quase lá.
-              </Title>
-            ) : (
-              <BackButton style={{ marginBottom: RFValue(40) }} onPress={Keyboard.dismiss} />
-            )}
+          <Header>
+            <Title>
+              Estamos{'\n'}
+              quase lá.
+            </Title>
+
             <Description>
               Faça seu login para começar{'\n'}
               uma experiência incrível.
@@ -123,14 +112,14 @@ export function SignIn() {
           </Form>
 
           <Footer>
-            <SubmitButton text="Login" onPress={handleSignIn} enabled={!!email && !!password} loading={false} />
+            <SubmitButton text="Login" onPress={handleSignIn} enabled={!!email && !!password} loading={isLoading} />
             <View style={{ height: RFValue(8) }} />
             <SubmitButton
               text="Crie conta gratuita"
               onPress={handleSignUp}
               color={theme.colors.background_secondary}
-              enabled={!!email && !!password}
-              light={true}
+              enabled
+              light
               loading={false}
             />
           </Footer>

@@ -22,9 +22,6 @@ import {
 
 export function SignUpFirstStep() {
   const { navigate } = useNavigation<any>();
-
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [cnh, setCNH] = useState('');
@@ -50,21 +47,6 @@ export function SignUpFirstStep() {
     }
   }
 
-  useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidShow', () => {
-      setIsKeyboardVisible(true);
-    });
-
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidHide', () => {
-      setIsKeyboardVisible(false);
-    });
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, [Keyboard]);
-
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -73,7 +55,7 @@ export function SignUpFirstStep() {
         flexGrow: 1,
       }}
     >
-      <Container behavior={Platform.OS === 'ios' ? 'position' : undefined} style={{ flex: 1 }} enabled>
+      <Container behavior="position" enabled>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
             <Header>
@@ -84,15 +66,11 @@ export function SignUpFirstStep() {
                   <Bullet />
                 </Steps>
               </NavBarContainer>
-              {!isKeyboardVisible ? (
-                <>
-                  <Title>Crie sua{'\n'}conta</Title>
-                  <Description>
-                    Faça seu cadastro de{'\n'}
-                    forma rápida e fácil.
-                  </Description>
-                </>
-              ) : null}
+              <Title>Crie sua{'\n'}conta</Title>
+              <Description>
+                Faça seu cadastro de{'\n'}
+                forma rápida e fácil.
+              </Description>
             </Header>
 
             <Form>

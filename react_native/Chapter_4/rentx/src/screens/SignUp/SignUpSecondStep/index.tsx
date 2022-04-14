@@ -39,10 +39,10 @@ export function SignUpSecondStep() {
 
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSignUp() {
+    setIsLoading(true);
     if (!password || !passwordConfirm) {
       Alert.alert('Atenção❗', 'Preencha todos os campos');
     }
@@ -58,32 +58,17 @@ export function SignUpSecondStep() {
         driver_license: user.cnh,
         password,
       });
-
       navigate('Confirmation', {
         title: 'Conta Criada!',
         subtitle: `Agora é só você fazer login\n e aproveitar`,
         nextScreenRoute: 'SignIn',
       });
     } catch (error) {
+      setIsLoading(false);
       Alert.alert('Erro ❌ \nOcorreu um erro ao tentar realizar o cadastro');
       console.log(error);
     }
   }
-
-  useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidShow', () => {
-      setIsKeyboardVisible(true);
-    });
-
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidHide', () => {
-      setIsKeyboardVisible(false);
-    });
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, [Keyboard]);
 
   return (
     <ScrollView
@@ -93,7 +78,7 @@ export function SignUpSecondStep() {
         flexGrow: 1,
       }}
     >
-      <Container behavior={Platform.OS === 'ios' ? 'position' : undefined} style={{ flex: 1 }} enabled>
+      <Container behavior="position" enabled>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
             <Header>
@@ -104,15 +89,11 @@ export function SignUpSecondStep() {
                   <Bullet active />
                 </Steps>
               </NavBarContainer>
-              {!isKeyboardVisible ? (
-                <>
-                  <Title>Crie sua{'\n'}conta</Title>
-                  <Description>
-                    Faça seu cadastro de{'\n'}
-                    forma rápida e fácil.
-                  </Description>
-                </>
-              ) : null}
+              <Title>Crie sua{'\n'}conta</Title>
+              <Description>
+                Faça seu cadastro de{'\n'}
+                forma rápida e fácil.
+              </Description>
             </Header>
             <Form>
               <Subtitle>2. Senha</Subtitle>
@@ -145,8 +126,8 @@ export function SignUpSecondStep() {
                 color={theme.colors.sucess}
                 text="Cadastrar"
                 onPress={handleSignUp}
-                enabled={true}
-                loading={false}
+                enabled={!!password && !!passwordConfirm}
+                loading={isLoading}
               />
             </Footer>
           </View>
