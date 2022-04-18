@@ -34,7 +34,6 @@ const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [data, setData] = useState<userProps>({} as userProps);
-  const [userStorageLoading, setUserStorageLoading] = useState(true);
 
   async function signIn({ email, password }: SignInCredentials) {
     try {

@@ -118,7 +118,7 @@ export function SignIn() {
               text="Crie conta gratuita"
               onPress={handleSignUp}
               color={theme.colors.background_secondary}
-              enabled
+              enabled={!isLoading}
               light
               loading={false}
             />
