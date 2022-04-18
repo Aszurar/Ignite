@@ -28,8 +28,8 @@ export function SignIn() {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [email, setEmail] = useState('jorgeoreidafloresta@gmail.com');
-  const [password, setPassword] = useState('123456');
+  const [email, setEmail] = useState('rodrigo@email.com');
+  const [password, setPassword] = useState('123');
 
   const passowrdRef = useRef<TextInput>(null);
 
