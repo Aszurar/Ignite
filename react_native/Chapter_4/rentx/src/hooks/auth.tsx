@@ -1,15 +1,23 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { database } from '../databases';
-import { api } from '../services/api';
-import { User as ModalUser } from '../databases/model/User';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect
+} from 'react';
+import { Alert } from 'react-native';
 
-interface userProps {
+import { api } from '../services/api';
+import { database } from '../databases';
+import { User as ModelUser } from '../databases/model/User';
+
+interface User {
   id: string;
   user_id: string;
-  name: string;
   email: string;
-  avatar?: string;
+  name: string;
   driver_license: string;
+  avatar: string;
   token: string;
 }
 
@@ -18,92 +26,139 @@ interface SignInCredentials {
   password: string;
 }
 
-interface AuthContextProps {
-  //interface dos dados que serão compartilhados na aplicação
-  user: userProps;
-  token: string;
-  signIn: (credential: SignInCredentials) => Promise<void>;
+interface AuthContextData {
+  user: User;
+  isLogging: boolean;
+  signIn: (credentials: SignInCredentials) => Promise<void>;
   signOut: () => Promise<void>;
+  updatedUser: (user: User) => Promise<void>;
 }
 
-export interface AuthProviderProps {
+interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [data, setData] = useState<userProps>({} as userProps);
-  const [userStorageLoading, setUserStorageLoading] = useState(true);
+  const [data, setData] = useState<User>({} as User);
+  const [isLogging, setIsLogging] = useState(false);
 
   async function signIn({ email, password }: SignInCredentials) {
-    try {
-      const response = await api.post('/sessions', {
-        email,
-        password,
-      });
+    setIsLogging(true);
 
-      const { token, user } = response.data;
-      console.log('=========== dados vindo da api back-end ============');
-      console.log('user', response.data);
+    const response = await api.post('/sessions', {
+      email,
+      password
+    });
 
-      const userCollection = database.get<ModalUser>('users');
-      await database.write(async () => {
-        await userCollection.create((newUser) => {
-          newUser.user_id = user.id;
-          newUser.name = user.name;
-          newUser.email = user.email;
-          newUser.avatar = user.avatar;
-          newUser.driver_license = user.driver_license;
-          newUser.token = token;
-        });
-      });
+    if (response.data.message === "Email or password incorret!") {
+      setIsLogging(false);
 
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-      setData({ ...user, token });
-    } catch (error: any) {
-      throw new Error(error);
+      return Alert.alert(
+        'Erro na autenticação',
+        'E-mail ou usuário inválido!'
+      )
     }
+
+    setIsLogging(false);
+
+    const { token, user } = response.data;
+    api.defaults.headers.authorization = `Bearer ${token}`;
+
+    const userCollection = database.get<ModelUser>('users');
+    await database.action(async () => {
+      await userCollection.create((newUser) => {
+        newUser.id = newUser.id,
+          newUser.user_id = user.id,
+          newUser.name = user.name,
+          newUser.email = user.email,
+          newUser.driver_license = user.driver_license,
+          newUser.avatar = user.avatar,
+          newUser.token = token
+      }).then((userData) => {
+        setData(userData._raw as unknown as User);
+      }).catch(() => {
+        setIsLogging(false);
+        return Alert.alert(
+          'Erro na autenticação',
+          'Não foi possível realizar o login!'
+        )
+      })
+    });
   }
 
   async function signOut() {
     try {
-      const userCollection = database.get<ModalUser>('users');
-      await database.write(async () => {
+      const userCollection = database.get<ModelUser>('users');
+      await database.action(async () => {
         const userSelected = await userCollection.find(data.id);
         await userSelected.destroyPermanently();
       });
 
-      setData({} as userProps);
-    } catch (error: any) {
+      setData({} as User);
+    } catch (error) {
+      return Alert.alert(
+        'Erro na atualização',
+        'Não foi possível atualizar os dados do usuário!'
+      )
+
+      console.log(error);
+    }
+  }
+
+  async function updatedUser(user: User) {
+    try {
+      const userCollection = database.get<ModelUser>('users');
+      await database.action(async () => {
+        const userSelected = await userCollection.find(user.id);
+        await userSelected.update((userData) => {
+          userData.name = user.name,
+            userData.driver_license = user.driver_license,
+            userData.avatar = user.avatar
+        });
+      });
+
+      setData(user);
+
+    } catch (error) {
+      console.log(error)
       throw new Error(error);
     }
   }
 
   useEffect(() => {
-    async function loadData() {
-      const userCollection = database.get<ModalUser>('users');
+    async function loadUserData() {
+      const userCollection = database.get<ModelUser>('users');
       const response = await userCollection.query().fetch();
 
       if (response.length > 0) {
-        const userData = response[0]._raw as unknown as userProps;
-        api.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
+        const userData = response[0]._raw as unknown as User;
+
+        api.defaults.headers.authorization = `Bearer ${userData.token}`;
         setData(userData);
       }
-
-      console.log('##### dados vindos do dispositivo local #####');
-
-      console.log(response);
     }
-    loadData();
-  }, []);
+
+    loadUserData();
+  }, [])
+
   return (
-    <AuthContext.Provider value={{ user: data, token: data.token, signIn, signOut }}>{children}</AuthContext.Provider>
-  );
+    <AuthContext.Provider
+      value={{
+        user: data,
+        isLogging,
+        signIn,
+        signOut,
+        updatedUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
-function useAuth(): AuthContextProps {
+function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
 
   return context;
