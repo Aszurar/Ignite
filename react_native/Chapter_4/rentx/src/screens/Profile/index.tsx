@@ -20,18 +20,19 @@ import {
 } from './styles';
 import { useTheme } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { Keyboard, KeyboardAvoidingView, StatusBar, TextInput, View } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, StatusBar, TextInput, View } from 'react-native';
 import { SubmitButton } from '../../components/SubmitButton';
 import { api } from '../../services/api';
 import { useAuth } from '../../hooks/auth';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import * as ImagePicker from 'expo-image-picker';
+import * as Yup from 'yup';
 import Input from '../../components/Input';
 import PasswordInput from '../../components/PasswordInput';
 
 export function Profile() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, updatedUser } = useAuth();
   const theme = useTheme();
 
   const [avatar, setAvatar] = useState(user.avatar);
@@ -43,7 +44,6 @@ export function Profile() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [sessionButtonPressed, setSessionButtonPressed] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
 
-  const emailRef = useRef<TextInput>(null);
   const driver_licenseRef = useRef<TextInput>(null);
   const newPasswordRef = useRef<TextInput>(null);
   const confirmPasswordRef = useRef<TextInput>(null);
@@ -68,13 +68,54 @@ export function Profile() {
     }
   }
 
-  function handleSignOut() {
+  async function handleUpdateProfile(){
     try {
-      signOut();
-    } catch (err) {
-      console.log(err);
+      const schema = Yup.object().shape({
+        name: Yup.string().required('Nome obrigatório'),
+        driver_license: Yup.string().required('CNH obrigatório'),
+      });
+
+      const data = { name, driver_license}
+      await schema.validate(data);
+
+      await updatedUser({
+        id: user.id,
+        user_id: user.user_id,
+        name: name,
+        email: user.email,
+        avatar: avatar,
+        driver_license: driver_license,
+        token: user.token,
+      })
+
+      Alert.alert('Perfil atualizado com sucesso!');
+    } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          Alert.alert('Opa!', error.message);
+        }else {
+          Alert.alert('Opa!', 'Erro ao atualizar perfil, tente novamente.');
+        }
+          
     }
   }
+
+  function handleSignOut() {
+    Alert.alert('Sair', 'Deseja realmente sair? \nprecisará de internet para conectar-se novamente', [
+      {
+        text: 'Não',
+      },
+      {
+        text: 'Sim',
+        onPress: () => {
+          try {
+            signOut();
+          } catch (err) {
+            console.log(err);
+          }
+        },
+      },
+    ]);
+    }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
@@ -124,21 +165,14 @@ export function Profile() {
                     iconName="user"
                     placeholder="Nome"
                     onChangeText={setName}
-                    onSubmitEditing={() => emailRef.current?.focus()}
+                    onSubmitEditing={() => driver_licenseRef.current?.focus()}
                     returnKeyType="next"
                   />
                   <DataFormSpace />
                   <Input
-                    ref={emailRef}
-                    autoCorrect={false}
-                    autoCapitalize="none"
+                    editable={false}
                     defaultValue={user.email}
                     iconName="mail"
-                    keyboardType="email-address"
-                    placeholder="E-mail"
-                    onChangeText={setEmail}
-                    onSubmitEditing={() => driver_licenseRef.current?.focus()}
-                    returnKeyType="next"
                   />
                   <DataFormSpace />
                   <Input
@@ -188,7 +222,7 @@ export function Profile() {
                 </>
               )}
             </DataForm>
-            <SubmitButton text="Salvar alterações" />
+            <SubmitButton text="Salvar alterações" onPress={handleUpdateProfile}/>
           </Content>
         </Container>
       </TouchableWithoutFeedback>

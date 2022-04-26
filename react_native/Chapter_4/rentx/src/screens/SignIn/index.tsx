@@ -1,15 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
-import {
-  Alert,
-  Keyboard,
-  Platform,
-  ScrollView,
-  StatusBar,
-  TextInput,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Alert, Keyboard, StatusBar, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components/native';
 import Input from '../../components/Input';
@@ -47,6 +38,7 @@ export function SignIn() {
     try {
       await schema.validate({ email, password });
       await signIn({ email, password });
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       if (error instanceof Yup.ValidationError) {

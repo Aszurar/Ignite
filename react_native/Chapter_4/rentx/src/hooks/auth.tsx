@@ -1,23 +1,21 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-  useEffect
-} from 'react';
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
-
-import { api } from '../services/api';
 import { database } from '../databases';
+import { api } from '../services/api';
 import { User as ModelUser } from '../databases/model/User';
 
-interface User {
-  id: string;
-  user_id: string;
-  email: string;
+interface UserProps {
+  id: string; // id do usuário no banco de dados local(celuar)/watermelondb
+  user_id: string; // id do usuário no banco de dados do back-end/sqlite
   name: string;
-  driver_license: string;
+  email: string;
   avatar: string;
+  driver_license: string;
+  token: string;
+}
+
+interface UserResponseDataProps {
+  user: Omit<UserProps, 'token' | 'user_id'>;
   token: string;
 }
 
@@ -26,107 +24,112 @@ interface SignInCredentials {
   password: string;
 }
 
-interface AuthContextData {
-  user: User;
-  isLogging: boolean;
+interface AuthContextProps {
+  //interface dos dados que serão compartilhados na aplicação.
+  user: UserProps;
   signIn: (credentials: SignInCredentials) => Promise<void>;
   signOut: () => Promise<void>;
-  updatedUser: (user: User) => Promise<void>;
+  isLogging: boolean;
+  updatedUser: (user: UserProps) => Promise<void>;
 }
 
-interface AuthProviderProps {
+export interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 function AuthProvider({ children }: AuthProviderProps) {
-<<<<<<< HEAD
-  const [data, setData] = useState<userProps>({} as userProps);
-=======
-  const [data, setData] = useState<User>({} as User);
+  const [data, setData] = useState<UserProps>({} as UserProps);
   const [isLogging, setIsLogging] = useState(false);
->>>>>>> master
 
   async function signIn({ email, password }: SignInCredentials) {
     setIsLogging(true);
-
     const response = await api.post('/sessions', {
       email,
-      password
+      password,
     });
 
-    if (response.data.message === "Email or password incorret!") {
+    if (response.data.message === 'Email or password incorrect!') {
       setIsLogging(false);
-
-      return Alert.alert(
-        'Erro na autenticação',
-        'E-mail ou usuário inválido!'
-      )
+      console.log('Email ou senha incorretos');
+      return Alert.alert('Erro na autenticação', 'Email ou senha incorretos');
     }
 
     setIsLogging(false);
 
-    const { token, user } = response.data;
-    api.defaults.headers.authorization = `Bearer ${token}`;
+    const { token, user } = response.data as UserResponseDataProps;
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    console.log('=========== dados vindo da api back-end ============');
+    console.log('user', response.data);
 
     const userCollection = database.get<ModelUser>('users');
-    await database.action(async () => {
-      await userCollection.create((newUser) => {
-        newUser.id = newUser.id,
-          newUser.user_id = user.id,
-          newUser.name = user.name,
-          newUser.email = user.email,
-          newUser.driver_license = user.driver_license,
-          newUser.avatar = user.avatar,
-          newUser.token = token
-      }).then((userData) => {
-        setData(userData._raw as unknown as User);
-      }).catch(() => {
-        setIsLogging(false);
-        return Alert.alert(
-          'Erro na autenticação',
-          'Não foi possível realizar o login!'
-        )
-      })
+
+    // const response = await database.write(async () => {
+    //   const userCreatedInLocalMomeory = await userCollection.create((newUser) => {
+    //     (newUser.id = newUser.id),
+    //       (newUser.user_id = user.id),
+    //       (newUser.name = user.name),
+    //       (newUser.email = user.email),
+    //       (newUser.driver_license = user.driver_license),
+    //       (newUser.avatar = user.avatar),
+    //       (newUser.token = token);
+    //     setData(newUser._raw as unknown as UserProps);
+    //     console.log('============ após a função de criação ============');
+    //     console.log('response', newUser);
+    //     console.log('response', newUser._raw);
+    //   });
+    //   return userCreatedInLocalMomeory;
+    // });
+
+    await database.write(async () => {
+      await userCollection
+        .create((newUser) => {
+          (newUser.id = newUser.id),
+            (newUser.user_id = user.id),
+            (newUser.name = user.name),
+            (newUser.email = user.email),
+            (newUser.driver_license = user.driver_license),
+            (newUser.avatar = user.avatar),
+            (newUser.token = token);
+        })
+        .then((userData) => {
+          setData(userData._raw as unknown as UserProps);
+        })
+        .catch(() => {
+          setIsLogging(false);
+          return Alert.alert('Erro na autenticação', 'Não foi possível realizar o login!');
+        });
     });
   }
 
   async function signOut() {
     try {
       const userCollection = database.get<ModelUser>('users');
-      await database.action(async () => {
+      await database.write(async () => {
         const userSelected = await userCollection.find(data.id);
         await userSelected.destroyPermanently();
       });
 
-      setData({} as User);
-    } catch (error) {
-      return Alert.alert(
-        'Erro na atualização',
-        'Não foi possível atualizar os dados do usuário!'
-      )
-
-      console.log(error);
+      setData({} as UserProps);
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 
-  async function updatedUser(user: User) {
+  async function updatedUser(user: UserProps) {
     try {
       const userCollection = database.get<ModelUser>('users');
-      await database.action(async () => {
+      await database.write(async () => {
         const userSelected = await userCollection.find(user.id);
         await userSelected.update((userData) => {
-          userData.name = user.name,
-            userData.driver_license = user.driver_license,
-            userData.avatar = user.avatar
+          (userData.name = user.name), (userData.driver_license = user.driver_license), (userData.avatar = user.avatar);
         });
       });
-
       setData(user);
-
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      console.log(error);
       throw new Error(error);
     }
   }
@@ -137,15 +140,17 @@ function AuthProvider({ children }: AuthProviderProps) {
       const response = await userCollection.query().fetch();
 
       if (response.length > 0) {
-        const userData = response[0]._raw as unknown as User;
-
-        api.defaults.headers.authorization = `Bearer ${userData.token}`;
+        const userData = response[0]._raw as unknown as UserProps;
+        api.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
         setData(userData);
       }
+      console.log('##### dados vindos do dispositivo local #####');
+
+      console.log(response);
     }
 
     loadUserData();
-  }, [])
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -154,15 +159,15 @@ function AuthProvider({ children }: AuthProviderProps) {
         isLogging,
         signIn,
         signOut,
-        updatedUser,
+        updatedUser
       }}
     >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
-function useAuth(): AuthContextData {
+function useAuth(): AuthContextProps {
   const context = useContext(AuthContext);
 
   return context;
