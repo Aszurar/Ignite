@@ -20,7 +20,7 @@ import {
 } from './styles';
 import { useTheme } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { Alert, Keyboard, KeyboardAvoidingView, StatusBar, TextInput, View } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StatusBar, TextInput, View } from 'react-native';
 import { SubmitButton } from '../../components/SubmitButton';
 import { api } from '../../services/api';
 import { useAuth } from '../../hooks/auth';
@@ -118,7 +118,8 @@ export function Profile() {
     }
 
   return (
-    <KeyboardAvoidingView behavior="position" enabled>
+    <KeyboardAvoidingView behavior="position" enabled
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
           <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />

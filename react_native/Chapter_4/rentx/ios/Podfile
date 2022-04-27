@@ -18,4 +18,6 @@ target 'rentx' do
   #     flipper_post_install(installer)
   #   end
   # end
+  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
 end
