@@ -93,10 +93,17 @@ export function SchedulingDetails() {
   }
 
   useEffect(() => {
-    setRentalPeriod({
-      startFormatted: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      endFormatted: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
-    });
+    let mounted = true;
+      if(mounted) {
+        setRentalPeriod({
+          startFormatted: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
+          endFormatted: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
+        });
+      }
+    return () => {
+      mounted = false;
+    };
+
   }, []);
 
   return (

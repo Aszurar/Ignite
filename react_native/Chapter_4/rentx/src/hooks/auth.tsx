@@ -66,23 +66,26 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     const userCollection = database.get<ModelUser>('users');
 
-    // const response = await database.write(async () => {
-    //   const userCreatedInLocalMomeory = await userCollection.create((newUser) => {
-    //     (newUser.id = newUser.id),
-    //       (newUser.user_id = user.id),
-    //       (newUser.name = user.name),
-    //       (newUser.email = user.email),
-    //       (newUser.driver_license = user.driver_license),
-    //       (newUser.avatar = user.avatar),
-    //       (newUser.token = token);
-    //     setData(newUser._raw as unknown as UserProps);
-    //     console.log('============ após a função de criação ============');
-    //     console.log('response', newUser);
-    //     console.log('response', newUser._raw);
-    //   });
-    //   return userCreatedInLocalMomeory;
-    // });
+  //   try { 
+  //    await database.write(async () => {
+  //     await userCollection.create((newUser) => {
+  //       (newUser.id = newUser.id),
+  //         (newUser.user_id = user.id),
+  //         (newUser.name = user.name),
+  //         (newUser.email = user.email),
+  //         (newUser.driver_license = user.driver_license),
+  //         (newUser.avatar = user.avatar),
+  //         (newUser.token = token);
 
+  //         console.log('newUserCreated', newUser);
+  //         setData(newUser._raw as unknown as UserProps);
+  //     });
+  //   });
+  // } catch (error) {
+  //   console.log('Erro ao criar usuário no banco de dados local', error);
+  // }
+
+    // forma do professor:
     await database.write(async () => {
       await userCollection
         .create((newUser) => {
@@ -135,6 +138,8 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   useEffect(() => {
+    let mounted = true;
+
     async function loadUserData() {
       const userCollection = database.get<ModelUser>('users');
       const response = await userCollection.query().fetch();
@@ -142,7 +147,9 @@ function AuthProvider({ children }: AuthProviderProps) {
       if (response.length > 0) {
         const userData = response[0]._raw as unknown as UserProps;
         api.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
-        setData(userData);
+        if(mounted){
+          setData(userData);
+        }
       }
       console.log('##### dados vindos do dispositivo local #####');
 
@@ -150,6 +157,10 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
 
     loadUserData();
+
+    return () => {
+      mounted = false;
+    }
   }, []);
 
   return (

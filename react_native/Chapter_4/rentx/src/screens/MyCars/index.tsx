@@ -36,19 +36,28 @@ export function MyCars() {
   const [mycars, setMyCars] = useState<CarProps[]>([]);
   const theme = useTheme();
   useEffect(() => {
+    let mounted = true;
+
     async function loadMyCars() {
       try {
         const response = await api.get('/schedules_byuser?user_id=1');
-
-        setMyCars(response.data);
+        if (mounted) {
+          setMyCars(response.data);
+        }
       } catch (error) {
         console.log(error);
         Alert.alert('Erro ao carregar os seus carros agendados', 'Tente novamente mais tarde');
       } finally {
-        setIsLoading(false);
+        if(mounted){
+          setIsLoading(false);
+        }
       }
     }
     loadMyCars();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
   return (
     <Container>
