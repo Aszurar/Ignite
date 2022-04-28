@@ -19,7 +19,7 @@ export function SignIn() {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [email, setEmail] = useState('rodrigo@email.com');
+  const [email, setEmail] = useState('rodrigo.goncalves@email.com');
   const [password, setPassword] = useState('123');
 
   const passowrdRef = useRef<TextInput>(null);
