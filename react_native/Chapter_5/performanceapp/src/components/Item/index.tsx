@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-
+import lodash from 'lodash';
 interface IItem {
     game: string;
     likes: number;
@@ -18,7 +18,7 @@ export function ItemComponent({ game, likes }: IItem) {
 }
 
 export const Item = memo(ItemComponent, (prevProps, nextProps) => {
-    return Object.is(prevProps, nextProps);
+    return lodash.isEqual(prevProps, nextProps);
 })
 
 const styles = StyleSheet.create({

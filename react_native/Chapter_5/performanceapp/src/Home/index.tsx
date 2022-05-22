@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { api } from '../api/api';
 import { SearchResults } from '../components/SearchResults';
@@ -22,6 +22,10 @@ export function Home() {
         }
     }
 
+    const handleUnfollow = useCallback(() => {
+        console.log("deixar de seguir")
+    }, [])
+
     return (
         <TouchableWithoutFeedback style={styles.wrapper} onPress={Keyboard.dismiss}>
             <View style={styles.container}>
@@ -38,7 +42,7 @@ export function Home() {
                     <Button title="Buscar" onPress={handleSearchGameList} />
                 </View>
 
-                <SearchResults data={gameList} />
+                <SearchResults data={gameList} unfollow={handleUnfollow} />
             </View>
         </TouchableWithoutFeedback>
     );
