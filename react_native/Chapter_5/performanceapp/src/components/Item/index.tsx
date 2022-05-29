@@ -1,24 +1,25 @@
 import React, { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import lodash from 'lodash';
 interface IItem {
-    game: string;
-    likes: number;
+    data: {
+        game: string;
+        likes: number;
+    }
 }
 
-export function ItemComponent({ game, likes }: IItem) {
+export function ItemComponent({ data }: IItem) {
     return (
         <TouchableOpacity activeOpacity={0.7}>
             <Text style={styles.text}>
-                {game} - Likes: {likes}
+                {data.game} - Likes: {data.likes}
             </Text>
-        </TouchableOpacity>
+        // </TouchableOpacity>
 
     );
 }
 
 export const Item = memo(ItemComponent, (prevProps, nextProps) => {
-    return lodash.isEqual(prevProps, nextProps);
+    return Object.is(prevProps.data, nextProps.data);
 })
 
 const styles = StyleSheet.create({

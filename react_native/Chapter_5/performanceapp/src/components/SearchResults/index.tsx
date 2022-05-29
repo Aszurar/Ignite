@@ -8,14 +8,14 @@ interface ISearchResults {
         game: string;
         likes: number;
     }[]
-    unfollow: () => void;
+    // unfollow: () => void;
 }
 
-export function SearchResults({ data, unfollow }: ISearchResults) {
+export function SearchResults({ data }: ISearchResults) {
     // const totalLikes = data.reduce((acc, cur) => acc + cur.likes, 0);
-    const totalLikes = useMemo(() => {
-        return data.reduce((acc, cur) => acc + cur.likes, 0);
-    }, [data]);
+    // const totalLikes = useMemo(() => {
+    //     return data.reduce((acc, cur) => acc + cur.likes, 0);
+    // }, [data]);
     // 1º redenrização: total: 3694ms
     //1º redenrização: total com useMemo: 1491ms
     //2º redenrização: Game 2: 316ms
@@ -23,10 +23,26 @@ export function SearchResults({ data, unfollow }: ISearchResults) {
 
     return (
         <>
-            <View style={styles.totalLikesContainer}>
+            {/* <View style={styles.totalLikesContainer}>
                 <Text style={styles.totalLikes}>Todal de Likes: {totalLikes}</Text>
-            </View>
-            <FlatList
+            </View> */}
+
+            <ScrollView>
+                {
+                    data.map(item => {
+                        return (
+                            <View key={item.id}>
+                                <Item
+                                    data={item}
+                                />
+                            </View>
+                        )
+                    })
+                }
+            </ScrollView>
+
+
+            {/* <FlatList
                 data={data}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
@@ -40,7 +56,7 @@ export function SearchResults({ data, unfollow }: ISearchResults) {
                         </TouchableOpacity>
                     </View>
                 )}
-            />
+            /> */}
         </>
     );
 }
