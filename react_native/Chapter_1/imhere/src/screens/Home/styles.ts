@@ -25,6 +25,9 @@ export const styles = StyleSheet.create({
     lineheight: 19,
     color: theme.COLORS.TEXT_SECONDARY,
   },
+  inputContainer: {
+    marginBottom: 42,
+  },
   subtitle: {
     fontFamily: theme.FONTS.BOLD,
     fontSize: 20,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import { Input } from '../../components/Input';
 import { styles } from './styles';
 
 export function Home() {
@@ -9,7 +10,9 @@ export function Home() {
         <Text style={styles.title}>Nome do evento</Text>
         <Text style={styles.date}>Sexta, 4 de Novembro de 2022.</Text>
       </View>
-
+      <View style={styles.inputContainer}>
+        <Input placeholder="Nome do participante" />
+      </View>
       <View >
         <Text style={styles.subtitle}>Participantes</Text>
         <View style={styles.textContainer}>

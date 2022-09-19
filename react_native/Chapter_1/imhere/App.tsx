@@ -21,7 +21,7 @@ export default function App() {
           backgroundColor="transparent"
           translucent
         />
-        {fontsLoaded ? <Home /> : <ActivityIndicator />}
+        {fontsLoaded ? <Home /> : <ActivityIndicator style={{ alignSelf: "center" }} />}
       </>
     </SafeAreaView>
   );

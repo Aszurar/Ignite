@@ -6,7 +6,8 @@ export default {
     TEXT_PRIMARY: "#FDFCFE",
     TEXT_SECONDARY: "#6B6B6B",
 
-    SUCCESS: "#31CF67"
+    SUCCESS: "#31CF67",
+    DELETE: "#E23C44",
   },
   FONTS: {
     REGULAR: "Roboto_400Regular",
