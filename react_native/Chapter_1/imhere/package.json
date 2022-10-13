@@ -10,15 +10,18 @@
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.2",
+    "@types/uuid": "^8.3.4",
     "expo": "~46.0.8",
     "expo-font": "~10.2.0",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.5",
+    "react-native-get-random-values": "^1.8.0",
     "react-native-svg": "12.3",
     "react-native-svg-transformer": "^1.0.0",
-    "react-native-web": "~0.18.7"
+    "react-native-web": "~0.18.7",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

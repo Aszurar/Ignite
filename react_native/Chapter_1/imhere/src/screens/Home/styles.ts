@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.COLORS.BACKGROUND,
     paddingHorizontal: 24,
     paddingTop: 75,
-    paddingBottom: 48,
+    paddingBottom: 24,
   },
   header: {
     marginBottom: 34,
@@ -28,6 +28,9 @@ export const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 42,
   },
+  subtitleContainer: {
+    flex: 1,
+  },
   subtitle: {
     fontFamily: theme.FONTS.BOLD,
     fontSize: 20,
@@ -45,5 +48,5 @@ export const styles = StyleSheet.create({
     lineHeight: 16,
     color: theme.COLORS.TEXT_PRIMARY,
     textAlign: 'center',
-  }
+  },
 });
