@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, RefreshControl, Text, View } from 'react-native';
+import { Alert, FlatList, Text, View } from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidV4 } from "uuid";
 
@@ -29,9 +29,19 @@ export function Home() {
   const handleNewParticipant = (value: string) => {
     setParticipants(value);
   }
+
+
   const handleAddNewParticipantToParticipantsList = () => {
     if (participants === '') {
-      Alert.alert('Digite o nome do participante!');
+      console.info("Entrou no if de verificação se foi nou não digital algo no Input antes de submeter.")
+      Alert.alert('Campo vazio', ", Digite o nome do participante!");
+      return;
+    }
+
+    const participantAlreadyExists = participantsList.find(participant => participant.name === participants);
+
+    if (participantAlreadyExists) {
+      Alert.alert('Participante já existe', "Digite outro nome, esse nome já está regustradi!");
       return;
     }
 
@@ -40,18 +50,25 @@ export function Home() {
       name: participants
     }
 
-    setNewParticipantsList([...participantsList, newParticipant]);
+    setNewParticipantsList(prevState => [...prevState, newParticipant]);
     setParticipants('');
   }
 
   const handleRemoveParticipantFromParticipantsList = (name: string) => {
-    const newParticipantList = participantsList.filter(participantsList => participantsList.name !== name);
-    setNewParticipantsList(newParticipantList);
+
+    Alert.alert('Remover participante', `Deseja remover ${name} da lista?`, [
+      {
+        text: 'Não',
+        style: 'cancel'
+      },
+      {
+        text: 'Sim',
+        onPress: () => setNewParticipantsList(participantsList.filter(participant => participant.name !== name))
+      }
+    ])
   }
 
   useEffect(() => {
-    console.log("====================================")
-    console.log(participantsList);
   }, [participantsList])
 
   return (
