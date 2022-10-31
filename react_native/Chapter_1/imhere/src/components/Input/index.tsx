@@ -6,14 +6,20 @@ import { styles } from './styles';
 
 
 interface IInputProps extends TextInputProps {
+  handleAddNewParticipantToParticipantsList: () => void;
 }
-export function Input({ ...rest }: IInputProps) {
+export function Input({ handleAddNewParticipantToParticipantsList, ...rest }: IInputProps) {
   return (
     <View style={styles.container}>
       <TextInput style={styles.input}
+        keyboardType="email-address"
+        returnKeyType="send"
         placeholderTextColor={theme.COLORS.TEXT_SECONDARY}
+        onSubmitEditing={handleAddNewParticipantToParticipantsList}
         {...rest} />
-      <Button />
+      <Button
+        onPress={handleAddNewParticipantToParticipantsList}
+      />
     </View>
   );
 }
