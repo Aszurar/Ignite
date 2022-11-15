@@ -3,7 +3,8 @@ import { Header } from '@components/Header';
 import { Container, GroupList, Separator, SubHeader } from './styles';
 import { HighlightText } from '@components/HighlightText';
 import { GroupCard } from '@components/GroupCard';
-import { View } from 'react-native';
+import { ListEmpty } from '@components/ListEmpty';
+import { Button } from '@components/Button';
 
 export type GroupProps = {
   id: string,
@@ -30,7 +31,7 @@ const DATA2 = {
 }
 
 export function Groups() {
-  const [groups, setGroups] = useState<GroupProps[]>([DATA, DATA2])
+  const [groups, setGroups] = useState<GroupProps[]>([DATA, DATA2, DATA, DATA2, DATA, DATA2])
 
   return (
     <Container >
@@ -50,6 +51,10 @@ export function Groups() {
           />
         )}
         ItemSeparatorComponent={() => <Separator />}
+        ListEmptyComponent={() => (<ListEmpty message="Que tal cadastrar a primeira turma?" />)}
+      />
+      <Button
+        title="Criar nova turma"
       />
     </Container>
   );
